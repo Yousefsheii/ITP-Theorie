@@ -1,481 +1,211 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Yousef Sheikho — Barber & Hair Studio. Moderne Cuts, Fades und Styling in Premium-Atmosphäre."
-    />
-    <meta name="theme-color" content="#05060a" />
-    <title>Yousef Sheikho — Barber & Hair Studio</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css" />
+  <meta
+          name="description"
+          content="Lebenslauf von Yousef Sheikho — Schüler am TGM mit Schwerpunkt Informationstechnologie, Softwareentwicklung und Medientechnik."
+  />
 
-    <script>
-      (function () {
-        try {
-          var saved = localStorage.getItem("ys_theme");
-          if (saved === "light") document.documentElement.dataset.theme = "light";
-        } catch (_) {}
-      })();
-    </script>
-  </head>
-  <body>
-    <a class="skip" href="#content">Zum Inhalt springen</a>
+  <meta name="theme-color" content="#f4f4f4" />
 
-    <header class="topbar" id="top">
-      <div class="container topbar__inner">
-        <a class="brand" href="#top" aria-label="Start">
-          <span class="brand__mark" aria-hidden="true"></span>
-          <span class="brand__text">
-            <span class="brand__title">Yousef Sheikho</span>
-            <span class="brand__sub">Barber · Hair Studio · Premium Cuts</span>
-          </span>
-        </a>
+  <title>Yousef Sheikho — Lebenslauf</title>
 
-        <nav class="nav" aria-label="Hauptnavigation">
-          <a href="#services">Leistungen</a>
-          <a href="#prices">Preise</a>
-          <a href="#gallery">Galerie</a>
-          <a href="#reviews">Bewertungen</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Termin</a>
-        </nav>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-        <div class="topbar__actions">
-          <button class="pill pill--ghost" id="themeToggle" type="button">
-            <span class="pill__icon" aria-hidden="true">◐</span>
-            <span class="pill__text">Theme</span>
-          </button>
-          <button class="pill pill--ghost navToggle" id="navToggle" type="button" aria-label="Menü öffnen">
-            <span class="pill__icon" aria-hidden="true">≡</span>
-            <span class="pill__text">Menü</span>
-          </button>
-        </div>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("ys_theme");
+        if (saved === "dark") {
+          document.documentElement.dataset.theme = "dark";
+        }
+      } catch (_) {}
+    })();
+  </script>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="container topbar__inner">
+    <div class="brand">
+      <div class="brand__text">
+        <span class="brand__title">Yousef Sheikho</span>
+        <span class="brand__sub">Lebenslauf · Portfolio · IT</span>
       </div>
+    </div>
 
-      <div class="mobileNav" id="mobileNav" hidden>
-        <div class="container mobileNav__inner" role="navigation" aria-label="Mobile Navigation">
-          <a href="#services">Leistungen</a>
-          <a href="#prices">Preise</a>
-          <a href="#gallery">Galerie</a>
-          <a href="#reviews">Bewertungen</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Termin</a>
+    <nav class="nav">
+      <a href="#about">Persönliches</a>
+      <a href="#education">Ausbildung</a>
+      <a href="#skills">Fähigkeiten</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+
+    <button class="themeBtn" id="themeToggle">
+      ◐
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container hero__inner">
+      <aside class="sidebar reveal">
+        <img
+                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop"
+                alt="Profilbild"
+                class="profileImage"
+        />
+
+        <div class="sideSection" id="about">
+          <h3>Persönliches</h3>
+
+          <ul>
+            <li>17.07.2007</li>
+            <li>1160 Wien</li>
+            <li>ledig</li>
+            <li>Deutsch / Kurdisch</li>
+            <li>Englisch B1-B2</li>
+          </ul>
         </div>
-      </div>
-    </header>
 
-    <main id="content">
-      <section class="hero">
-        <div class="hero__bg" aria-hidden="true">
-          <div class="grain"></div>
-          <div class="aurora a1"></div>
-          <div class="aurora a2"></div>
-          <div class="aurora a3"></div>
+        <div class="sideSection">
+          <h3>Qualifikationen</h3>
+
+          <ul>
+            <li>Java</li>
+            <li>JavaScript</li>
+            <li>HTML & CSS</li>
+            <li>Adobe</li>
+            <li>Word & Excel</li>
+            <li>PowerPoint</li>
+          </ul>
         </div>
 
-        <div class="container hero__inner">
-          <div class="hero__copy">
-            <p class="kicker reveal">Clean · Präzise · Premium</p>
-            <h1 class="hero__title reveal">
-              Barber & Hair Studio.
-              <span class="hero__titleAccent">Cuts, die sitzen.</span>
-            </h1>
-            <p class="hero__lead reveal">
-              Willkommen bei <strong>Yousef Sheikho</strong> — moderne Fades, klassische Konturen und Styling
-              mit Detail‑Fokus. Schnell, sauber, entspannt.
-            </p>
+        <div class="sideSection">
+          <h3>Fähigkeiten</h3>
 
-            <div class="hero__cta reveal">
-              <a class="pill pill--primary" href="#contact">
-                <span class="pill__text">Termin anfragen</span>
-                <span class="pill__icon" aria-hidden="true">→</span>
-              </a>
-              <a class="pill" href="#prices">
-                <span class="pill__text">Preise ansehen</span>
-                <span class="pill__icon" aria-hidden="true">✦</span>
-              </a>
-            </div>
+          <ul>
+            <li>Teamfähigkeit</li>
+            <li>Organisation</li>
+            <li>Kreativität</li>
+            <li>Zielstrebigkeit</li>
+            <li>Flexibilität</li>
+          </ul>
+        </div>
+      </aside>
 
-            <div class="hero__meta reveal">
-              <div class="metaCard">
-                <div class="metaCard__k">Spezial</div>
-                <div class="metaCard__v">Skin Fade · Taper · Texture</div>
-              </div>
-              <div class="metaCard">
-                <div class="metaCard__k">Service</div>
-                <div class="metaCard__v">Haare · Bart · Augenbrauen</div>
-              </div>
-              <div class="metaCard">
-                <div class="metaCard__k">Vibe</div>
-                <div class="metaCard__v">Noir · Gold · Clean Studio</div>
-              </div>
-            </div>
+      <section class="content reveal">
+        <div class="titleBox">
+          <h1>Yousef</h1>
+          <h2>Sheikho</h2>
+
+          <p>
+            Schüler am TGM mit Schwerpunkt
+            Informationstechnologie,
+            Softwareentwicklung und Medientechnik.
+          </p>
+        </div>
+
+        <section class="cvSection" id="education">
+          <div class="sectionTitle">
+            Ausbildung
           </div>
 
-          <aside class="hero__panel reveal" aria-label="Kurzinfo">
-            <div class="glassCard">
-              <div class="glassCard__top">
-                <div class="badge">BARBER STUDIO</div>
-                <div class="sig">YS</div>
-              </div>
-              <div class="glassCard__title">Schnell buchen</div>
-              <p class="glassCard__p">
-                Schreib kurz deinen Wunsch (Haare/Bart/Combo) + Datum/Uhrzeit. Wir melden uns mit einem freien
-                Slot zurück.
-              </p>
-              <div class="glassCard__row">
-                <div class="chip">Klassisch</div>
-                <div class="chip chip--gold">Premium Finish</div>
-                <div class="chip chip--red">Fresh Fade</div>
-              </div>
-              <div class="glassCard__foot">
-                <span class="dot"></span>
-                <span>Antwort meist am selben Tag</span>
-              </div>
-            </div>
-          </aside>
-        </div>
+          <article class="entry">
+            <h3>TGM Wien</h3>
 
-        <div class="hero__parallax" aria-hidden="true">
-          <div class="parallaxOrb o1"></div>
-          <div class="parallaxOrb o2"></div>
-          <div class="parallaxLine l1"></div>
-          <div class="parallaxLine l2"></div>
-        </div>
-      </section>
+            <span>Seit 2022</span>
 
-      <section class="section" id="services">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">Leistungen</h2>
-            <p class="reveal">
-              Saubere Linien, starke Übergänge, hochwertiges Styling. Du bekommst einen Look, der auch nach
-              Tagen noch sitzt.
-            </p>
-          </div>
-
-          <div class="grid grid--3">
-            <article class="card reveal">
-              <div class="card__icon" aria-hidden="true">✂</div>
-              <h3>Haarschnitt</h3>
-              <p>Classic, modern, texture — inklusive Beratung und Finish (Waschen/Styling je nach Wunsch).</p>
-            </article>
-
-            <article class="card reveal">
-              <div class="card__icon card__icon--gold" aria-hidden="true">⟡</div>
-              <h3>Fade & Konturen</h3>
-              <p>Skin fade, taper, line‑up — präzise Kanten und sauberer Übergang für den „fresh“ Look.</p>
-            </article>
-
-            <article class="card reveal">
-              <div class="card__icon card__icon--red" aria-hidden="true">⌁</div>
-              <h3>Bart & Pflege</h3>
-              <p>Trim, Kontur, Hot‑Towel Feeling (optional) und Pflege‑Tipps für Zuhause.</p>
-            </article>
-          </div>
-
-          <div class="callout reveal">
-            <div class="callout__title">Tipp</div>
             <p>
-              Bring gern ein Referenz‑Foto mit. So treffen wir deinen Stil schneller und du bekommst genau
-              das Ergebnis, das du willst.
+              Höhere Technische Lehranstalt
+              für Informationstechnologie.
             </p>
-          </div>
-        </div>
-      </section>
 
-      <section class="section section--dim" id="prices">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">Preise</h2>
-            <p class="reveal">Transparent, fair, premium. (Beispielpreise — du kannst sie später leicht anpassen.)</p>
-          </div>
+            <ul>
+              <li>Softwareentwicklung</li>
+              <li>Medientechnik</li>
+              <li>Systemtechnik</li>
+            </ul>
+          </article>
 
-          <div class="grid grid--3">
-            <article class="panel reveal">
-              <h3>Haarschnitt</h3>
-              <ul class="list">
-                <li><strong>Classic Cut</strong> — ab 20€</li>
-                <li><strong>Fade / Taper</strong> — ab 25€</li>
-                <li><strong>Waschen + Styling</strong> — +5€</li>
-              </ul>
-            </article>
+          <article class="entry">
+            <h3>Gymnasium Marianum De La Salle</h3>
 
-            <article class="panel reveal">
-              <h3>Bart</h3>
-              <ul class="list">
-                <li><strong>Beard Trim</strong> — ab 15€</li>
-                <li><strong>Konturen</strong> — ab 10€</li>
-                <li><strong>Pflege‑Finish</strong> — +5€</li>
-              </ul>
-            </article>
+            <span>2018 – 2022</span>
 
-            <article class="panel reveal">
-              <h3>Combo</h3>
-              <ul class="list">
-                <li><strong>Haare + Bart</strong> — ab 35€</li>
-                <li><strong>Fade + Bart</strong> — ab 40€</li>
-                <li><strong>Augenbrauen</strong> — ab 8€</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="grid grid--4 stats" style="margin-top: 14px">
-            <div class="statCard reveal">
-              <div class="statCard__k">Kunden / Woche</div>
-              <div class="statCard__v"><span class="counter" data-to="120">0</span><span class="unit">+</span></div>
-              <div class="statCard__bar"><span style="--w: 82%"></span></div>
-            </div>
-            <div class="statCard reveal">
-              <div class="statCard__k">Freshness</div>
-              <div class="statCard__v"><span class="counter" data-to="99">0</span><span class="unit">%</span></div>
-              <div class="statCard__bar statCard__bar--gold"><span style="--w: 99%"></span></div>
-            </div>
-            <div class="statCard reveal">
-              <div class="statCard__k">Timing</div>
-              <div class="statCard__v"><span class="counter" data-to="15">0</span><span class="unit">min</span></div>
-              <div class="statCard__bar statCard__bar--red"><span style="--w: 74%"></span></div>
-            </div>
-            <div class="statCard reveal">
-              <div class="statCard__k">Bewertungen</div>
-              <div class="statCard__v"><span class="counter" data-to="250">0</span><span class="unit">+</span></div>
-              <div class="statCard__bar"><span style="--w: 90%"></span></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="gallery">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">Galerie</h2>
-            <p class="reveal">Ein paar Styles als Inspiration. (Später kannst du echte Fotos einbauen.)</p>
-          </div>
-
-          <div class="grid grid--3 gallery">
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag tag--gold">Fade</span>
-                <span class="tag">Clean</span>
-              </div>
-              <h3>Skin Fade</h3>
-              <p>Ultra sauberer Übergang, perfekt für einen frischen Look.</p>
-            </article>
-
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag tag--red">Bart</span>
-                <span class="tag">Line‑up</span>
-              </div>
-              <h3>Beard + Contour</h3>
-              <p>Kontur, Symmetrie und Finish — ohne „übertrieben“ zu wirken.</p>
-            </article>
-
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag">Classic</span>
-                <span class="tag tag--gold">Premium</span>
-              </div>
-              <h3>Classic Cut</h3>
-              <p>Elegant, alltagstauglich, immer clean.</p>
-            </article>
-
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag">Texture</span>
-                <span class="tag tag--red">Modern</span>
-              </div>
-              <h3>Textured Top</h3>
-              <p>Volumen & Struktur — passt perfekt zu Taper oder Mid Fade.</p>
-            </article>
-
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag tag--gold">Details</span>
-                <span class="tag">Edge</span>
-              </div>
-              <h3>Sharp Line‑Up</h3>
-              <p>Kanten, die man sieht — sauber, aber natürlich.</p>
-            </article>
-
-            <article class="shot reveal">
-              <div class="shot__top">
-                <span class="tag">Style</span>
-                <span class="tag tag--gold">Finish</span>
-              </div>
-              <h3>Final Touch</h3>
-              <p>Das Finish macht den Unterschied: Styling, Pflege, Halt.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section--dim" id="reviews">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">Bewertungen</h2>
-            <p class="reveal">Kurz, ehrlich, überzeugend. (Beispiel‑Reviews)</p>
-          </div>
-
-          <div class="grid grid--3">
-            <figure class="quoteCard reveal">
-              <blockquote>„Der Fade ist jedes Mal perfekt. Sauber, schnell und entspannt.“</blockquote>
-              <figcaption>— Alex</figcaption>
-            </figure>
-
-            <figure class="quoteCard reveal">
-              <blockquote>„Bart-Konturen on point. Studio sieht mega aus, Service top.“</blockquote>
-              <figcaption>— Samir</figcaption>
-            </figure>
-
-            <figure class="quoteCard reveal">
-              <blockquote>„Beratung war stark, Ergebnis genau wie das Foto. Komme fix wieder.“</blockquote>
-              <figcaption>— Daniel</figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="faq">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">FAQ</h2>
-            <p class="reveal">Alles Wichtige in 30 Sekunden.</p>
-          </div>
-
-          <div class="faqGrid">
-            <details class="faqItem reveal">
-              <summary>Brauche ich einen Termin?</summary>
-              <div class="faqBody">
-                Empfehlung: ja. So hast du garantiert einen Slot. Wenn spontan was frei ist, geht’s natürlich
-                auch.
-              </div>
-            </details>
-
-            <details class="faqItem reveal">
-              <summary>Wie lange dauert ein Haarschnitt?</summary>
-              <div class="faqBody">
-                Je nach Style meist 20–35 Minuten. Combo (Haare + Bart) ca. 40–60 Minuten.
-              </div>
-            </details>
-
-            <details class="faqItem reveal">
-              <summary>Kann ich ein Referenzfoto mitbringen?</summary>
-              <div class="faqBody">
-                Ja, gern. Das hilft extrem, damit wir den Look exakt treffen.
-              </div>
-            </details>
-
-            <details class="faqItem reveal">
-              <summary>Wo seid ihr?</summary>
-              <div class="faqBody">
-                Adresse kannst du unten im Kontaktbereich eintragen (oder später mit Google Maps einbauen).
-              </div>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section--dim" id="contact">
-        <div class="container">
-          <div class="sectionHead">
-            <h2 class="reveal">Termin anfragen</h2>
-            <p class="reveal">
-              Formular ist in dieser Demo ohne echtes Senden — es zeigt ein sauberes UI mit Validierung.
+            <p>
+              Allgemeinbildende Unterstufe.
             </p>
+          </article>
+
+          <article class="entry">
+            <h3>Volksschule Celtesgasse</h3>
+
+            <span>2015 – 2018</span>
+          </article>
+        </section>
+
+        <section class="cvSection" id="skills">
+          <div class="sectionTitle">
+            Persönliche Fähigkeiten
           </div>
 
-          <div class="grid grid--2">
-            <form class="form reveal" id="contactForm" novalidate>
-              <div class="formRow">
-                <label class="field">
-                  <span>Name</span>
-                  <input name="name" autocomplete="name" required minlength="2" placeholder="Dein Name" />
-                </label>
-                <label class="field">
-                  <span>Telefon</span>
-                  <input name="phone" autocomplete="tel" required minlength="6" placeholder="+43 ..." />
-                </label>
-              </div>
+          <article class="entry">
+            <h3>Kommunikation</h3>
 
-              <label class="field">
-                <span>Service</span>
-                <input name="service" required minlength="3" placeholder="Haare / Bart / Combo" />
-              </label>
+            <p>
+              Einfühlungsvermögen und Teamfähigkeit
+              durch aktives Arbeiten im Fußballverein.
+            </p>
+          </article>
 
-              <label class="field">
-                <span>Wunschzeit</span>
-                <input name="time" required minlength="3" placeholder="z.B. Samstag 14:30" />
-              </label>
+          <article class="entry">
+            <h3>Organisation</h3>
 
-              <label class="field">
-                <span>Nachricht</span>
-                <textarea
-                  name="message"
-                  rows="5"
-                  required
-                  minlength="10"
-                  placeholder="Kurz Details: Style, Länge, Foto vorhanden?"
-                ></textarea>
-              </label>
+            <p>
+              Zielstrebiges und gewissenhaftes
+              Arbeiten mit guter Planung.
+            </p>
+          </article>
 
-              <div class="formActions">
-                <button class="pill pill--primary" type="submit">
-                  <span class="pill__text">Anfrage speichern</span>
-                  <span class="pill__icon" aria-hidden="true">↗</span>
-                </button>
-                <p class="formHint" id="formHint" role="status" aria-live="polite"></p>
-              </div>
-            </form>
+          <article class="entry">
+            <h3>IT Kenntnisse</h3>
 
-            <aside class="contactPanel reveal" aria-label="Infos">
-              <div class="contactPanel__card">
-                <div class="contactPanel__k">Öffnungszeiten</div>
-                <div class="contactPanel__v">Mo–Sa: 10:00–19:00</div>
-              </div>
-              <div class="contactPanel__card">
-                <div class="contactPanel__k">Adresse</div>
-                <div class="contactPanel__v">Hier deine Adresse eintragen</div>
-              </div>
-              <div class="contactPanel__card">
-                <div class="contactPanel__k">Kontakt</div>
-                <div class="contactPanel__v">Instagram / WhatsApp / Telefon</div>
-              </div>
+            <p>
+              Erfahrung mit Java, Webentwicklung,
+              Adobe Programmen und Office.
+            </p>
+          </article>
+        </section>
 
-              <div class="seal" aria-hidden="true">
-                <div class="seal__ring"></div>
-                <div class="seal__core">YS</div>
-                <div class="seal__sub">BARBER · FADE · DETAIL</div>
-              </div>
-            </aside>
+        <footer class="footer" id="contact">
+          <div>
+            <strong>E-Mail:</strong><br />
+            ysheikho@student.tgm.ac.at
           </div>
-        </div>
+
+          <div>
+            <strong>Telefon:</strong><br />
+            +43 681 84236187
+          </div>
+        </footer>
       </section>
-    </main>
+    </div>
+  </section>
+</main>
 
-    <footer class="footer">
-      <div class="container footer__inner">
-        <div class="footer__left">
-          <div class="footer__title">Yousef Sheikho</div>
-          <div class="footer__meta">Barber & Hair Studio · Vercel Deploy Demo</div>
-        </div>
-        <div class="footer__right">
-          <a class="footer__link" href="#top">Nach oben</a>
-          <a class="footer__link" href="#services">Leistungen</a>
-          <a class="footer__link" href="#contact">Termin</a>
-        </div>
-      </div>
-    </footer>
-
-    <script src="./script.js"></script>
-  </body>
+<script src="./script.js"></script>
+</body>
 </html>
