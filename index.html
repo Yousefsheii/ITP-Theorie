@@ -1,211 +1,687 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEDT Kotlin Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-  <meta
-          name="description"
-          content="Lebenslauf von Yousef Sheikho — Schüler am TGM mit Schwerpunkt Informationstechnologie, Softwareentwicklung und Medientechnik."
-  />
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-  <meta name="theme-color" content="#f4f4f4" />
+    .app {
+      width: 100%;
+      max-width: 850px;
+      background: #111827;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
 
-  <title>Yousef Sheikho — Lebenslauf</title>
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
 
-  <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-  />
+    .badge {
+      background: #334155;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
 
-  <link rel="stylesheet" href="./styles.css" />
+    .card {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 20px;
+      padding: 24px;
+    }
 
-  <script>
-    (function () {
-      try {
-        var saved = localStorage.getItem("ys_theme");
-        if (saved === "dark") {
-          document.documentElement.dataset.theme = "dark";
-        }
-      } catch (_) {}
-    })();
-  </script>
+    .question {
+      font-size: 24px;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+
+    .category {
+      color: #93c5fd;
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .answer {
+      background: #1f2937;
+      color: white;
+      text-align: left;
+      border: 1px solid #374151;
+    }
+
+    .answer:hover {
+      transform: translateY(-2px);
+      background: #374151;
+    }
+
+    .correct {
+      background: #166534 !important;
+      border-color: #22c55e !important;
+    }
+
+    .wrong {
+      background: #7f1d1d !important;
+      border-color: #ef4444 !important;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .primary {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+
+    .primary:hover {
+      background: #1d4ed8;
+    }
+
+    .secondary {
+      background: #334155;
+      color: white;
+    }
+
+    .secondary:hover {
+      background: #475569;
+    }
+
+    .feedback {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      display: none;
+      line-height: 1.45;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.good {
+      background: rgba(22, 101, 52, 0.35);
+      border: 1px solid #22c55e;
+    }
+
+    .feedback.bad {
+      background: rgba(127, 29, 29, 0.35);
+      border: 1px solid #ef4444;
+    }
+
+    .progress-wrap {
+      height: 12px;
+      background: #1f2937;
+      border-radius: 999px;
+      margin: 18px 0;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #3b82f6);
+      transition: 0.25s;
+    }
+
+    .start-screen,
+    .end-screen {
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    .start-screen p,
+    .end-screen p {
+      color: #cbd5e1;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .stat {
+      background: #1f2937;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .mode-select {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    code {
+      background: #1f2937;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #bfdbfe;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 18px;
+      }
+
+      .question {
+        font-size: 20px;
+      }
+
+      .stats,
+      .mode-select {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<header class="topbar">
-  <div class="container topbar__inner">
-    <div class="brand">
-      <div class="brand__text">
-        <span class="brand__title">Yousef Sheikho</span>
-        <span class="brand__sub">Lebenslauf · Portfolio · IT</span>
-      </div>
+<main class="app">
+  <div class="topbar">
+    <h1>MEDT Kotlin Quiz</h1>
+    <div class="badge" id="highscoreBadge">Highscore: 0</div>
+  </div>
+
+  <section id="startScreen" class="start-screen card">
+    <h2>Quizlet-Style Prüfungstraining</h2>
+    <p>
+      Trainiere MediaPlayer, Permissions, BroadcastReceiver, Animationen, Transitions,
+      Kotlin-Basics und besonders deine bisherigen Fehler.
+    </p>
+
+    <div class="mode-select">
+      <button class="primary" onclick="startQuiz('all')">Gesamter Stoff</button>
+      <button class="secondary" onclick="startQuiz('mistakes')">Nur Fehler-Themen</button>
+    </div>
+  </section>
+
+  <section id="quizScreen" class="hidden">
+    <div class="topbar">
+      <div class="badge" id="counterBadge">Frage 1 / 1</div>
+      <div class="badge" id="scoreBadge">Punkte: 0</div>
+      <div class="badge" id="streakBadge">Serie: 0</div>
     </div>
 
-    <nav class="nav">
-      <a href="#about">Persönliches</a>
-      <a href="#education">Ausbildung</a>
-      <a href="#skills">Fähigkeiten</a>
-      <a href="#contact">Kontakt</a>
-    </nav>
+    <div class="progress-wrap">
+      <div class="progress" id="progress"></div>
+    </div>
 
-    <button class="themeBtn" id="themeToggle">
-      ◐
-    </button>
-  </div>
-</header>
+    <div class="card">
+      <div class="category" id="category"></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback"></div>
 
-<main>
-  <section class="hero">
-    <div class="container hero__inner">
-      <aside class="sidebar reveal">
-        <img
-                src="img.png"
-                alt="Profilbild"
-                class="profileImage"
-        />
+      <div class="controls">
+        <button class="primary hidden" id="nextBtn" onclick="nextQuestion()">Nächste Frage</button>
+        <button class="secondary" onclick="restart()">Neu starten</button>
+      </div>
+    </div>
+  </section>
 
-        <div class="sideSection" id="about">
-          <h3>Persönliches</h3>
-
-          <ul>
-            <li>01.01.2000</li>
-            <li>1210 Wien</li>
-            <li>ledig</li>
-            <li>Deutsch / Kurdisch</li>
-            <li>Englisch B1-B2</li>
-          </ul>
-        </div>
-
-        <div class="sideSection">
-          <h3>Qualifikationen</h3>
-
-          <ul>
-            <li>Java</li>
-            <li>JavaScript</li>
-            <li>HTML & CSS</li>
-            <li>Adobe</li>
-            <li>Word & Excel</li>
-            <li>PowerPoint</li>
-          </ul>
-        </div>
-
-        <div class="sideSection">
-          <h3>Fähigkeiten</h3>
-
-          <ul>
-            <li>Teamfähigkeit</li>
-            <li>Organisation</li>
-            <li>Kreativität</li>
-            <li>Zielstrebigkeit</li>
-            <li>Flexibilität</li>
-          </ul>
-        </div>
-      </aside>
-
-      <section class="content reveal">
-        <div class="titleBox">
-          <h1>Yousef</h1>
-          <h2>Sheikho</h2>
-
-          <p>
-            Schüler am TGM mit Schwerpunkt
-            Informationstechnologie,
-            Softwareentwicklung und Medientechnik.
-          </p>
-        </div>
-
-        <section class="cvSection" id="education">
-          <div class="sectionTitle">
-            Ausbildung
-          </div>
-
-          <article class="entry">
-            <h3>TGM Wien</h3>
-
-            <span>Seit 2022</span>
-
-            <p>
-              Höhere Technische Lehranstalt
-              für Informationstechnologie.
-            </p>
-
-            <ul>
-              <li>Softwareentwicklung</li>
-              <li>Medientechnik</li>
-              <li>Systemtechnik</li>
-            </ul>
-          </article>
-
-          <article class="entry">
-            <h3>Gymnasium Marianum De La Salle</h3>
-
-            <span>2018 – 2022</span>
-
-            <p>
-              Allgemeinbildende Unterstufe.
-            </p>
-          </article>
-
-          <article class="entry">
-            <h3>Volksschule Celtesgasse</h3>
-
-            <span>2015 – 2018</span>
-          </article>
-        </section>
-
-        <section class="cvSection" id="skills">
-          <div class="sectionTitle">
-            Persönliche Fähigkeiten
-          </div>
-
-          <article class="entry">
-            <h3>Kommunikation</h3>
-
-            <p>
-              Einfühlungsvermögen und Teamfähigkeit
-              durch aktives Arbeiten im Fußballverein.
-            </p>
-          </article>
-
-          <article class="entry">
-            <h3>Organisation</h3>
-
-            <p>
-              Zielstrebiges und gewissenhaftes
-              Arbeiten mit guter Planung.
-            </p>
-          </article>
-
-          <article class="entry">
-            <h3>IT Kenntnisse</h3>
-
-            <p>
-              Erfahrung mit Java, Webentwicklung,
-              Adobe Programmen und Office.
-            </p>
-          </article>
-        </section>
-
-        <footer class="footer" id="contact">
-          <div>
-            <strong>E-Mail:</strong><br />
-            ysheikho@student.tgm.ac.at
-          </div>
-
-          <div>
-            <strong>Telefon:</strong><br />
-            +1 531 51412423
-          </div>
-        </footer>
-      </section>
+  <section id="endScreen" class="end-screen card hidden">
+    <h2>Quiz beendet!</h2>
+    <div class="stats">
+      <div class="stat"><strong id="finalScore">0</strong>Punkte</div>
+      <div class="stat"><strong id="finalPercent">0%</strong>Richtig</div>
+      <div class="stat"><strong id="wrongCount">0</strong>Fehler</div>
+    </div>
+    <p id="endText"></p>
+    <div class="controls" style="justify-content:center;">
+      <button class="primary" onclick="startQuiz('all')">Nochmal alles</button>
+      <button class="secondary" onclick="startWrongOnly()">Nur falsche wiederholen</button>
     </div>
   </section>
 </main>
 
-<script src="./script.js"></script>
+<script>
+  const questions = [
+    {
+      category: "MediaPlayer",
+      q: "Welche zwei Hauptmöglichkeiten gibt es, Audio mit dem MediaPlayer abzuspielen?",
+      options: ["lokale Files und externe URLs/Streaming", "start() und pause()", "seekTo() und release()", "Manifest und Activity"],
+      answer: 0,
+      explain: "MediaPlayer kann lokale Audiodateien abspielen oder Audio über externe URLs streamen.",
+      mistake: true
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode startet die Wiedergabe?",
+      options: ["play()", "start()", "run()", "prepare()"],
+      answer: 1,
+      explain: "Die Wiedergabe startet mit start()."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode springt zu einer bestimmten Audioposition?",
+      options: ["seekTo()", "goTo()", "jumpTo()", "moveTo()"],
+      answer: 0,
+      explain: "seekTo() springt zu einer bestimmten Position im Audio."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode gibt Ressourcen des MediaPlayers frei?",
+      options: ["free()", "destroy()", "release()", "close()"],
+      answer: 2,
+      explain: "release() gibt belegte Ressourcen wieder frei."
+    },
+    {
+      category: "Streaming",
+      q: "Warum verwendet man beim Streaming einen OnPreparedListener?",
+      options: ["Damit die App schöner aussieht", "Damit erst gestartet wird, wenn der Stream vorbereitet ist", "Damit automatisch aufgenommen wird", "Damit keine Permission nötig ist"],
+      answer: 1,
+      explain: "Beim Streaming sind Daten nicht sofort bereit. Der Listener meldet, wann gestartet werden kann.",
+      mistake: true
+    },
+    {
+      category: "Permissions",
+      q: "Welche Permission wird für Internet-Streaming benötigt?",
+      options: ["android.permission.INTERNET", "android.permission.RECORD_AUDIO", "android.permission.STREAM", "android.permission.WIFI_ONLY"],
+      answer: 0,
+      explain: "Für Internetzugriff braucht man android.permission.INTERNET."
+    },
+    {
+      category: "Permissions",
+      q: "Welche Runtime Permission braucht man für Audioaufnahme?",
+      options: ["INTERNET", "RECORD_AUDIO", "WAKE_LOCK", "READ_AUDIO_STREAM"],
+      answer: 1,
+      explain: "Für Aufnahmen mit MediaRecorder braucht man RECORD_AUDIO."
+    },
+    {
+      category: "Permissions",
+      q: "Wie fragt man Runtime Permissions an?",
+      options: ["ActivityCompat.requestPermissions(...) ", "onRequestPermissionsResult(...) ", "MediaRecorder.request(...) ", "Manifest.askPermission(...) "],
+      answer: 0,
+      explain: "Anfragen macht man mit ActivityCompat.requestPermissions(...). Das Ergebnis kommt später zurück.",
+      mistake: true
+    },
+    {
+      category: "Permissions",
+      q: "Welche Methode erhält das Ergebnis einer Permission-Anfrage?",
+      options: ["requestPermissions()", "onCreate()", "onRequestPermissionsResult()", "permissionResult()"],
+      answer: 2,
+      explain: "Das Ergebnis wird in onRequestPermissionsResult() verarbeitet.",
+      mistake: true
+    },
+    {
+      category: "MediaRecorder",
+      q: "Welche Klasse wird zum Aufnehmen von Audio verwendet?",
+      options: ["MediaPlayer", "MediaRecorder", "AudioPlayer", "SoundRecorderView"],
+      answer: 1,
+      explain: "Zum Aufnehmen verwendet man die Klasse MediaRecorder."
+    },
+    {
+      category: "MediaRecorder",
+      q: "Welche zusätzliche MediaRecorder-Einstellung wäre möglich?",
+      options: ["Sampling Rate", "Button-Farbe", "Activity-Name", "Theme-Attribut"],
+      answer: 0,
+      explain: "Mögliche Einstellungen sind z. B. Sampling Rate, Audio Channels oder Bitrate.",
+      mistake: true
+    },
+    {
+      category: "BroadcastReceiver",
+      q: "Welche Methode muss im BroadcastReceiver überschrieben werden?",
+      options: ["onStart()", "onReceive()", "onBroadcast()", "onIntent()"],
+      answer: 1,
+      explain: "Ein BroadcastReceiver überschreibt onReceive(Context, Intent)."
+    },
+    {
+      category: "BroadcastReceiver",
+      q: "Wie entfernt man einen registrierten Receiver?",
+      options: ["removeReceiver()", "deleteReceiver()", "unregisterReceiver()", "stopReceiver()"],
+      answer: 2,
+      explain: "Ein registrierter Receiver wird mit unregisterReceiver() entfernt."
+    },
+    {
+      category: "Kotlin",
+      q: "Welche Kotlin-Zeile ist korrekt für eine veränderbare Integer-Variable counter mit Wert 0?",
+      options: ["var counter: Int = 0", "var counter: int? = 0", "val counter: Int = 0", "var counter = null"],
+      answer: 0,
+      explain: "In Kotlin schreibt man Int groß. var ist veränderbar. Ein ? ist hier nicht nötig.",
+      mistake: true
+    },
+    {
+      category: "Kotlin",
+      q: "Was bedeutet String? in Kotlin?",
+      options: ["Der String ist geheim", "Der Wert darf auch null sein", "Der String ist unveränderbar", "Der String ist automatisch leer"],
+      answer: 1,
+      explain: "Das Fragezeichen bedeutet nullable: Der Wert darf null sein."
+    },
+    {
+      category: "View Animation",
+      q: "Welche Begriffe gehören zu View Animationen?",
+      options: ["alpha, scale, rotate, translate", "fade, slide, explode", "ObjectAnimator, AnimatorSet", "MediaPlayer, MediaRecorder"],
+      answer: 0,
+      explain: "View Animationen sind alpha, scale, rotate und translate.",
+      mistake: true
+    },
+    {
+      category: "Property Animation",
+      q: "Welche Klasse gehört zur Property Animation?",
+      options: ["TranslateAnimation", "AnimationDrawable", "ObjectAnimator", "BroadcastReceiver"],
+      answer: 2,
+      explain: "ObjectAnimator wird für Property Animation verwendet.",
+      mistake: true
+    },
+    {
+      category: "Property Animation",
+      q: "Was ist in ObjectAnimator.ofFloat(button, 'alpha', 1f, 0f) die Property?",
+      options: ["button", "alpha", "1f", "ObjectAnimator"],
+      answer: 1,
+      explain: "Die Property ist alpha. button ist nur das Objekt, das animiert wird.",
+      mistake: true
+    },
+    {
+      category: "Property Animation",
+      q: "Was bedeutet alpha von 1f zu 0f?",
+      options: ["Die View wird größer", "Die View wird gedreht", "Die View blendet aus / wird transparent", "Die View bewegt sich nach rechts"],
+      answer: 2,
+      explain: "alpha 1f ist sichtbar, alpha 0f ist transparent."
+    },
+    {
+      category: "Frame Animation",
+      q: "Welche Klasse gehört zu Frame Animationen?",
+      options: ["ObjectAnimator", "AnimationDrawable", "ActivityOptions", "ScaleAnimation"],
+      answer: 1,
+      explain: "Frame Animationen werden mit AnimationDrawable umgesetzt.",
+      mistake: true
+    },
+    {
+      category: "Frame Animation",
+      q: "Welches XML-Element verwendet man für Frame Animationen?",
+      options: ["<items>", "<frame-set>", "<animation-list>", "<objectAnimator>"],
+      answer: 2,
+      explain: "Eine Frame Animation nutzt <animation-list> mit mehreren <item>-Elementen.",
+      mistake: true
+    },
+    {
+      category: "Animationen",
+      q: "In welchem Ordner liegen XML-Animationen?",
+      options: ["res/layout", "res/raw", "res/anim", "res/transition-only"],
+      answer: 2,
+      explain: "XML-Animationen liegen im Ordner res/anim."
+    },
+    {
+      category: "Transitions",
+      q: "Welche Begriffe sind Activity Transitions?",
+      options: ["scale, rotate, translate", "fade, slide, explode", "alpha, rotate, scale", "pause, start, release"],
+      answer: 1,
+      explain: "Activity Transitions sind Fade, Slide und Explode.",
+      mistake: true
+    },
+    {
+      category: "Transitions",
+      q: "Ab welchem API-Level funktionieren Activity Transitions?",
+      options: ["API Level 14", "API Level 21", "API Level 30", "API Level 1"],
+      answer: 1,
+      explain: "Activity Transitions sind ab Android 5.0 / API Level 21 verfügbar."
+    },
+    {
+      category: "Transitions",
+      q: "Wie lautet das vollständige Theme-Attribut für Activity Transitions?",
+      options: ["windowTransitions", "android:windowActivityTransitions", "android:activityAnimation", "window:transitionActivity"],
+      answer: 1,
+      explain: "Das vollständige Attribut heißt android:windowActivityTransitions.",
+      mistake: true
+    },
+    {
+      category: "Transitions",
+      q: "Welche Methode muss vor setContentView() aufgerufen werden?",
+      options: ["getWindow().requestFeature(...) ", "getWindow.requestFeatures()", "setTransitionView()", "ActivityOptions.start()"],
+      answer: 0,
+      explain: "getWindow().requestFeature(...) muss vor setContentView() ausgeführt werden.",
+      mistake: true
+    },
+    {
+      category: "Transitions",
+      q: "Welche Klasse aktiviert Activity Transitions beim Start einer Activity?",
+      options: ["ActivityOptions", "AnimationUtils", "MediaPlayer", "IntentFilter"],
+      answer: 0,
+      explain: "Dazu verwendet man ActivityOptions.makeSceneTransitionAnimation(...)."
+    },
+    {
+      category: "Wahr/Falsch",
+      q: "translate gehört zu View Animationen.",
+      options: ["Richtig", "Falsch"],
+      answer: 0,
+      explain: "Richtig. translate ist eine View Animation.",
+      mistake: true
+    },
+    {
+      category: "Wahr/Falsch",
+      q: "Explode ist eine View Animation.",
+      options: ["Richtig", "Falsch"],
+      answer: 1,
+      explain: "Falsch. Explode ist eine Transition."
+    },
+    {
+      category: "Wahr/Falsch",
+      q: "ObjectAnimator gehört zu Property Animation.",
+      options: ["Richtig", "Falsch"],
+      answer: 0,
+      explain: "Richtig. ObjectAnimator gehört zur Property Animation."
+    }
+  ];
+
+  let activeQuestions = [];
+  let currentIndex = 0;
+  let score = 0;
+  let streak = 0;
+  let answered = false;
+  let wrongQuestions = [];
+
+  const startScreen = document.getElementById("startScreen");
+  const quizScreen = document.getElementById("quizScreen");
+  const endScreen = document.getElementById("endScreen");
+  const categoryEl = document.getElementById("category");
+  const questionEl = document.getElementById("question");
+  const answersEl = document.getElementById("answers");
+  const feedbackEl = document.getElementById("feedback");
+  const nextBtn = document.getElementById("nextBtn");
+  const scoreBadge = document.getElementById("scoreBadge");
+  const streakBadge = document.getElementById("streakBadge");
+  const counterBadge = document.getElementById("counterBadge");
+  const progressEl = document.getElementById("progress");
+  const highscoreBadge = document.getElementById("highscoreBadge");
+
+  function shuffle(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+  }
+
+  function updateHighscore() {
+    const highscore = localStorage.getItem("medtHighscore") || 0;
+    highscoreBadge.textContent = "Highscore: " + highscore;
+  }
+
+  function startQuiz(mode) {
+    const pool = mode === "mistakes" ? questions.filter(q => q.mistake) : questions;
+    activeQuestions = shuffle(pool).map(q => ({ ...q }));
+    currentIndex = 0;
+    score = 0;
+    streak = 0;
+    wrongQuestions = [];
+    startScreen.classList.add("hidden");
+    endScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+    showQuestion();
+  }
+
+  function startWrongOnly() {
+    if (wrongQuestions.length === 0) {
+      startQuiz("mistakes");
+      return;
+    }
+    activeQuestions = shuffle(wrongQuestions).map(q => ({ ...q }));
+    currentIndex = 0;
+    score = 0;
+    streak = 0;
+    wrongQuestions = [];
+    endScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+    showQuestion();
+  }
+
+  function showQuestion() {
+    answered = false;
+    nextBtn.classList.add("hidden");
+    feedbackEl.className = "feedback";
+    feedbackEl.textContent = "";
+    answersEl.innerHTML = "";
+
+    const q = activeQuestions[currentIndex];
+    categoryEl.textContent = q.category;
+    questionEl.innerHTML = q.q;
+    counterBadge.textContent = `Frage ${currentIndex + 1} / ${activeQuestions.length}`;
+    scoreBadge.textContent = `Punkte: ${score}`;
+    streakBadge.textContent = `Serie: ${streak}`;
+    progressEl.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
+
+    q.options.forEach((option, index) => {
+      const btn = document.createElement("button");
+      btn.className = "answer";
+      btn.innerHTML = option;
+      btn.onclick = () => checkAnswer(index, btn);
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selectedIndex, selectedBtn) {
+    if (answered) return;
+    answered = true;
+
+    const q = activeQuestions[currentIndex];
+    const buttons = document.querySelectorAll(".answer");
+    buttons.forEach((btn, index) => {
+      btn.disabled = true;
+      if (index === q.answer) btn.classList.add("correct");
+    });
+
+    if (selectedIndex === q.answer) {
+      streak++;
+      score += 10 + Math.min(streak * 2, 10);
+      feedbackEl.className = "feedback show good";
+      feedbackEl.innerHTML = "✅ Richtig!<br>" + q.explain;
+    } else {
+      streak = 0;
+      selectedBtn.classList.add("wrong");
+      wrongQuestions.push(q);
+      feedbackEl.className = "feedback show bad";
+      feedbackEl.innerHTML = "❌ Falsch.<br>" + q.explain;
+    }
+
+    scoreBadge.textContent = `Punkte: ${score}`;
+    streakBadge.textContent = `Serie: ${streak}`;
+    nextBtn.classList.remove("hidden");
+  }
+
+  function nextQuestion() {
+    currentIndex++;
+    if (currentIndex >= activeQuestions.length) {
+      finishQuiz();
+    } else {
+      showQuestion();
+    }
+  }
+
+  function finishQuiz() {
+    quizScreen.classList.add("hidden");
+    endScreen.classList.remove("hidden");
+    progressEl.style.width = "100%";
+
+    const correct = activeQuestions.length - wrongQuestions.length;
+    const percent = Math.round((correct / activeQuestions.length) * 100);
+
+    document.getElementById("finalScore").textContent = score;
+    document.getElementById("finalPercent").textContent = percent + "%";
+    document.getElementById("wrongCount").textContent = wrongQuestions.length;
+
+    const oldHighscore = Number(localStorage.getItem("medtHighscore") || 0);
+    if (score > oldHighscore) {
+      localStorage.setItem("medtHighscore", score);
+    }
+    updateHighscore();
+
+    let text = "";
+    if (percent >= 90) text = "Sehr stark! Du bist fast prüfungsbereit.";
+    else if (percent >= 75) text = "Gut! Wiederhole nur noch die falschen Fragen.";
+    else if (percent >= 50) text = "Okay, aber Frame Animation, Permissions und Transitions nochmal üben.";
+    else text = "Noch nicht sicher genug. Starte am besten den Fehler-Modus.";
+
+    document.getElementById("endText").textContent = text;
+  }
+
+  function restart() {
+    startScreen.classList.remove("hidden");
+    quizScreen.classList.add("hidden");
+    endScreen.classList.add("hidden");
+  }
+
+  updateHighscore();
+</script>
 </body>
 </html>
