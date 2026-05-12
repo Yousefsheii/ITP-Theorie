@@ -306,270 +306,253 @@
 
 <script>
   const questions = [
+    // Kotlin
     {
-      category: "Code Frage",
+      category: "Kotlin",
       type: "text",
-      q: "Schreibe die Kotlin-Codezeile für eine veränderbare String-Variable namens songTitle, die auch null sein darf.",
-      answerText: "var songTitle: String? = null",
-      explain: "Eine veränderbare nullable String-Variable schreibt man mit var und String?.",
-      mistake: true
+      q: "Schreibe eine unveränderbare String-Konstante appName mit dem Wert MusicApp.",
+      answerText: "val appName: String = \"MusicApp\"",
+      explain: "Unveränderbare Werte werden mit val erstellt."
     },
     {
-      category: "Code Frage",
+      category: "Kotlin",
+      q: "Was bedeutet das ? in String??",
+      options: ["nullable", "private", "public", "immutable"],
+      answer: 0,
+      explain: "String? bedeutet, dass null erlaubt ist."
+    },
+    {
+      category: "Kotlin",
       type: "text",
-      q: "Welche Methode wird verwendet, um Runtime Permissions anzufragen?",
+      q: "Schreibe eine veränderbare Integer-Variable counter mit Wert 0.",
+      answerText: "var counter: Int = 0",
+      explain: "Veränderbare Variablen werden mit var erstellt."
+    },
+
+    // MediaPlayer
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode pausiert Audio?",
+      options: ["pause()", "stop()", "prepare()", "release()"],
+      answer: 0,
+      explain: "pause() pausiert die Wiedergabe."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode gibt bool zurück, ob Audio gerade läuft?",
+      options: ["isPlaying()", "playing()", "isRunning()", "audioState()"],
+      answer: 0,
+      explain: "isPlaying() gibt true oder false zurück."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Wo liegen lokale Audiofiles normalerweise?",
+      options: ["res/raw", "res/layout", "res/audio", "assets/music"],
+      answer: 0,
+      explain: "Lokale Audiofiles liegen typischerweise in res/raw."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Methode springt zu einer Audioposition?",
+      options: ["jumpTo()", "seekTo()", "moveTo()", "goTo()"],
+      answer: 1,
+      explain: "seekTo() springt zu einer bestimmten Position."
+    },
+    {
+      category: "MediaPlayer",
+      q: "Welche Formate unterstützt MediaPlayer unter anderem?",
+      options: ["MP3 und AAC", "PSD und AI", "ZIP und RAR", "DOCX und XLSX"],
+      answer: 0,
+      explain: "MediaPlayer unterstützt z. B. MP3 und AAC."
+    },
+
+    // Permissions
+    {
+      category: "Permissions",
+      q: "Wo werden Install-time Permissions eingetragen?",
+      options: ["Manifest", "Gradle", "Layout", "styles.xml"],
+      answer: 0,
+      explain: "Install-time Permissions werden im Manifest eingetragen."
+    },
+    {
+      category: "Permissions",
+      q: "Welche Permission wird für Internetzugriff benötigt?",
+      options: ["android.permission.INTERNET", "android.permission.URL", "android.permission.WEB", "android.permission.STREAM"],
+      answer: 0,
+      explain: "Für Internetzugriff benötigt man android.permission.INTERNET."
+    },
+    {
+      category: "Permissions",
+      q: "Welche Runtime Permission wird für Audioaufnahme benötigt?",
+      options: ["RECORD_AUDIO", "INTERNET", "STREAM_AUDIO", "AUDIO_PERMISSION"],
+      answer: 0,
+      explain: "Audioaufnahme benötigt RECORD_AUDIO."
+    },
+    {
+      category: "Permissions",
+      type: "text",
+      q: "Wie heißt die Methode zum Anfragen von Runtime Permissions?",
       answerText: "ActivityCompat.requestPermissions",
-      explain: "Runtime Permissions werden mit ActivityCompat.requestPermissions(...) angefragt.",
-      mistake: true
+      explain: "Permissions werden mit ActivityCompat.requestPermissions(...) angefragt."
     },
     {
-      category: "Code Frage",
+      category: "Permissions",
       type: "text",
-      q: "Wie heißt die Callback-Methode für das Ergebnis einer Permission-Anfrage?",
+      q: "Wie heißt die Callback-Methode für Permission-Ergebnisse?",
       answerText: "onRequestPermissionsResult",
-      explain: "Das Ergebnis der Anfrage kommt in onRequestPermissionsResult().",
-      mistake: true
+      explain: "Das Ergebnis kommt in onRequestPermissionsResult()."
     },
+
+    // BroadcastReceiver
     {
-      category: "Code Frage",
-      type: "text",
-      q: "Welche Klasse gehört zu Frame Animationen?",
-      answerText: "AnimationDrawable",
-      explain: "Frame Animationen werden mit AnimationDrawable umgesetzt.",
-      mistake: true
-    },
-    {
-      category: "Code Frage",
-      type: "text",
-      q: "Wie lautet das vollständige Theme-Attribut zum Aktivieren von Activity Transitions?",
-      answerText: "android:windowActivityTransitions",
-      explain: "Das vollständige Attribut lautet android:windowActivityTransitions.",
-      mistake: true
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche zwei Hauptmöglichkeiten gibt es, Audio mit dem MediaPlayer abzuspielen?",
-      options: ["lokale Files und externe URLs/Streaming", "start() und pause()", "seekTo() und release()", "Manifest und Activity"],
+      category: "BroadcastReceiver",
+      q: "Von welcher Klasse erbt ein BroadcastReceiver?",
+      options: ["BroadcastReceiver", "IntentReceiver", "Activity", "ReceiverActivity"],
       answer: 0,
-      explain: "MediaPlayer kann lokale Audiodateien abspielen oder Audio über externe URLs streamen.",
-      mistake: true
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode startet die Wiedergabe?",
-      options: ["play()", "start()", "run()", "prepare()"],
-      answer: 1,
-      explain: "Die Wiedergabe startet mit start()."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode springt zu einer bestimmten Audioposition?",
-      options: ["seekTo()", "goTo()", "jumpTo()", "moveTo()"],
-      answer: 0,
-      explain: "seekTo() springt zu einer bestimmten Position im Audio."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode gibt Ressourcen des MediaPlayers frei?",
-      options: ["free()", "destroy()", "release()", "close()"],
-      answer: 2,
-      explain: "release() gibt belegte Ressourcen wieder frei."
-    },
-    {
-      category: "Streaming",
-      q: "Warum verwendet man beim Streaming einen OnPreparedListener?",
-      options: ["Damit die App schöner aussieht", "Damit erst gestartet wird, wenn der Stream vorbereitet ist", "Damit automatisch aufgenommen wird", "Damit keine Permission nötig ist"],
-      answer: 1,
-      explain: "Beim Streaming sind Daten nicht sofort bereit. Der Listener meldet, wann gestartet werden kann.",
-      mistake: true
-    },
-    {
-      category: "Permissions",
-      q: "Welche Permission wird für Internet-Streaming benötigt?",
-      options: ["android.permission.INTERNET", "android.permission.RECORD_AUDIO", "android.permission.STREAM", "android.permission.WIFI_ONLY"],
-      answer: 0,
-      explain: "Für Internetzugriff braucht man android.permission.INTERNET."
-    },
-    {
-      category: "Permissions",
-      q: "Welche Runtime Permission braucht man für Audioaufnahme?",
-      options: ["INTERNET", "RECORD_AUDIO", "WAKE_LOCK", "READ_AUDIO_STREAM"],
-      answer: 1,
-      explain: "Für Aufnahmen mit MediaRecorder braucht man RECORD_AUDIO."
-    },
-    {
-      category: "Permissions",
-      q: "Wie fragt man Runtime Permissions an?",
-      options: ["ActivityCompat.requestPermissions(...) ", "onRequestPermissionsResult(...) ", "MediaRecorder.request(...) ", "Manifest.askPermission(...) "],
-      answer: 0,
-      explain: "Anfragen macht man mit ActivityCompat.requestPermissions(...). Das Ergebnis kommt später zurück.",
-      mistake: true
-    },
-    {
-      category: "Permissions",
-      q: "Welche Methode erhält das Ergebnis einer Permission-Anfrage?",
-      options: ["requestPermissions()", "onCreate()", "onRequestPermissionsResult()", "permissionResult()"],
-      answer: 2,
-      explain: "Das Ergebnis wird in onRequestPermissionsResult() verarbeitet.",
-      mistake: true
-    },
-    {
-      category: "MediaRecorder",
-      q: "Welche Klasse wird zum Aufnehmen von Audio verwendet?",
-      options: ["MediaPlayer", "MediaRecorder", "AudioPlayer", "SoundRecorderView"],
-      answer: 1,
-      explain: "Zum Aufnehmen verwendet man die Klasse MediaRecorder."
-    },
-    {
-      category: "MediaRecorder",
-      q: "Welche zusätzliche MediaRecorder-Einstellung wäre möglich?",
-      options: ["Sampling Rate", "Button-Farbe", "Activity-Name", "Theme-Attribut"],
-      answer: 0,
-      explain: "Mögliche Einstellungen sind z. B. Sampling Rate, Audio Channels oder Bitrate.",
-      mistake: true
+      explain: "BroadcastReceiver erbt von BroadcastReceiver."
     },
     {
       category: "BroadcastReceiver",
-      q: "Welche Methode muss im BroadcastReceiver überschrieben werden?",
-      options: ["onStart()", "onReceive()", "onBroadcast()", "onIntent()"],
-      answer: 1,
-      explain: "Ein BroadcastReceiver überschreibt onReceive(Context, Intent)."
+      type: "text",
+      q: "Welche Methode wird im BroadcastReceiver überschrieben?",
+      answerText: "onReceive",
+      explain: "BroadcastReceiver überschreibt onReceive()."
     },
     {
       category: "BroadcastReceiver",
-      q: "Wie entfernt man einen registrierten Receiver?",
-      options: ["removeReceiver()", "deleteReceiver()", "unregisterReceiver()", "stopReceiver()"],
-      answer: 2,
-      explain: "Ein registrierter Receiver wird mit unregisterReceiver() entfernt."
-    },
-    {
-      category: "Kotlin",
-      q: "Welche Kotlin-Zeile ist korrekt für eine veränderbare Integer-Variable counter mit Wert 0?",
-      options: ["var counter: Int = 0", "var counter: int? = 0", "val counter: Int = 0", "var counter = null"],
+      q: "Welche Methode registriert einen Receiver?",
+      options: ["registerReceiver()", "startReceiver()", "enableReceiver()", "addReceiver()"],
       answer: 0,
-      explain: "In Kotlin schreibt man Int groß. var ist veränderbar. Ein ? ist hier nicht nötig.",
-      mistake: true
+      explain: "Receiver werden mit registerReceiver() registriert."
     },
     {
-      category: "Kotlin",
-      q: "Was bedeutet String? in Kotlin?",
-      options: ["Der String ist geheim", "Der Wert darf auch null sein", "Der String ist unveränderbar", "Der String ist automatisch leer"],
-      answer: 1,
-      explain: "Das Fragezeichen bedeutet nullable: Der Wert darf null sein."
+      category: "BroadcastReceiver",
+      q: "Welche Action gehört zum Flugmodus?",
+      options: ["Intent.ACTION_AIRPLANE_MODE_CHANGED", "Intent.FLIGHT_MODE", "Intent.AIRPLANE", "Intent.ACTION_FLIGHT"],
+      answer: 0,
+      explain: "Die Flugmodus-Action lautet Intent.ACTION_AIRPLANE_MODE_CHANGED."
     },
+
+    // View Animation
     {
       category: "View Animation",
       q: "Welche Begriffe gehören zu View Animationen?",
-      options: ["alpha, scale, rotate, translate", "fade, slide, explode", "ObjectAnimator, AnimatorSet", "MediaPlayer, MediaRecorder"],
+      options: ["scale rotate alpha translate", "fade explode slide", "ObjectAnimator AnimatorSet", "MediaPlayer seekTo release"],
       answer: 0,
-      explain: "View Animationen sind alpha, scale, rotate und translate.",
-      mistake: true
+      explain: "scale, rotate, alpha und translate gehören zu View Animationen."
     },
     {
-      category: "Property Animation",
-      q: "Welche Klasse gehört zur Property Animation?",
-      options: ["TranslateAnimation", "AnimationDrawable", "ObjectAnimator", "BroadcastReceiver"],
-      answer: 2,
-      explain: "ObjectAnimator wird für Property Animation verwendet.",
-      mistake: true
-    },
-    {
-      category: "Property Animation",
-      q: "Was ist in ObjectAnimator.ofFloat(button, 'alpha', 1f, 0f) die Property?",
-      options: ["button", "alpha", "1f", "ObjectAnimator"],
-      answer: 1,
-      explain: "Die Property ist alpha. button ist nur das Objekt, das animiert wird.",
-      mistake: true
-    },
-    {
-      category: "Property Animation",
-      q: "Was bedeutet alpha von 1f zu 0f?",
-      options: ["Die View wird größer", "Die View wird gedreht", "Die View blendet aus / wird transparent", "Die View bewegt sich nach rechts"],
-      answer: 2,
-      explain: "alpha 1f ist sichtbar, alpha 0f ist transparent."
-    },
-    {
-      category: "Frame Animation",
-      q: "Welche Klasse gehört zu Frame Animationen?",
-      options: ["ObjectAnimator", "AnimationDrawable", "ActivityOptions", "ScaleAnimation"],
-      answer: 1,
-      explain: "Frame Animationen werden mit AnimationDrawable umgesetzt.",
-      mistake: true
-    },
-    {
-      category: "Frame Animation",
-      q: "Welches XML-Element verwendet man für Frame Animationen?",
-      options: ["<items>", "<frame-set>", "<animation-list>", "<objectAnimator>"],
-      answer: 2,
-      explain: "Eine Frame Animation nutzt <animation-list> mit mehreren <item>-Elementen.",
-      mistake: true
-    },
-    {
-      category: "Animationen",
+      category: "View Animation",
       q: "In welchem Ordner liegen XML-Animationen?",
-      options: ["res/layout", "res/raw", "res/anim", "res/transition-only"],
-      answer: 2,
-      explain: "XML-Animationen liegen im Ordner res/anim."
+      options: ["res/anim", "res/layout", "res/raw", "res/transition"],
+      answer: 0,
+      explain: "Animationen liegen in res/anim."
     },
+    {
+      category: "View Animation",
+      q: "Welche Klasse lädt XML-Animationen?",
+      options: ["AnimationUtils", "AnimatorLoader", "AnimationDrawable", "MediaAnimator"],
+      answer: 0,
+      explain: "AnimationUtils.loadAnimation() lädt XML-Animationen."
+    },
+
+    // Property Animation
+    {
+      category: "Property Animation",
+      q: "Welche Klasse wird für Property Animation verwendet?",
+      options: ["ObjectAnimator", "TranslateAnimation", "AnimationDrawable", "FrameAnimator"],
+      answer: 0,
+      explain: "Property Animation verwendet ObjectAnimator."
+    },
+    {
+      category: "Property Animation",
+      q: "Welche Property beschreibt Transparenz?",
+      options: ["alpha", "rotate", "translate", "scale"],
+      answer: 0,
+      explain: "alpha beschreibt Transparenz."
+    },
+    {
+      category: "Property Animation",
+      q: "Was passiert bei alpha von 1f zu 0f?",
+      options: ["View blendet aus", "View wird größer", "View dreht sich", "View bewegt sich"],
+      answer: 0,
+      explain: "Die View wird transparent bzw. blendet aus."
+    },
+
+    // Frame Animation
+    {
+      category: "Frame Animation",
+      type: "text",
+      q: "Welche Klasse gehört zu Frame Animationen?",
+      answerText: "AnimationDrawable",
+      explain: "Frame Animationen verwenden AnimationDrawable."
+    },
+    {
+      category: "Frame Animation",
+      q: "Welches XML-Element verwendet man bei Frame Animationen?",
+      options: ["<animation-list>", "<frame>", "<animator>", "<rotate>"],
+      answer: 0,
+      explain: "Frame Animationen verwenden <animation-list>."
+    },
+
+    // Transitions
     {
       category: "Transitions",
       q: "Welche Begriffe sind Activity Transitions?",
-      options: ["scale, rotate, translate", "fade, slide, explode", "alpha, rotate, scale", "pause, start, release"],
-      answer: 1,
-      explain: "Activity Transitions sind Fade, Slide und Explode.",
-      mistake: true
+      options: ["fade slide explode", "alpha rotate scale", "seekTo start pause", "AnimatorSet ObjectAnimator"],
+      answer: 0,
+      explain: "Fade, Slide und Explode sind Activity Transitions."
     },
     {
       category: "Transitions",
       q: "Ab welchem API-Level funktionieren Activity Transitions?",
-      options: ["API Level 14", "API Level 21", "API Level 30", "API Level 1"],
-      answer: 1,
-      explain: "Activity Transitions sind ab Android 5.0 / API Level 21 verfügbar."
+      options: ["21", "14", "8", "30"],
+      answer: 0,
+      explain: "Transitions funktionieren ab API Level 21."
     },
     {
       category: "Transitions",
+      type: "text",
       q: "Wie lautet das vollständige Theme-Attribut für Activity Transitions?",
-      options: ["windowTransitions", "android:windowActivityTransitions", "android:activityAnimation", "window:transitionActivity"],
-      answer: 1,
-      explain: "Das vollständige Attribut heißt android:windowActivityTransitions.",
-      mistake: true
+      answerText: "android:windowActivityTransitions",
+      explain: "Das Attribut lautet android:windowActivityTransitions."
     },
     {
       category: "Transitions",
+      type: "text",
       q: "Welche Methode muss vor setContentView() aufgerufen werden?",
-      options: ["getWindow().requestFeature(...) ", "getWindow.requestFeatures()", "setTransitionView()", "ActivityOptions.start()"],
-      answer: 0,
-      explain: "getWindow().requestFeature(...) muss vor setContentView() ausgeführt werden.",
-      mistake: true
+      answerText: "getWindow().requestFeature",
+      explain: "getWindow().requestFeature(...) muss vor setContentView() aufgerufen werden."
     },
-    {
-      category: "Transitions",
-      q: "Welche Klasse aktiviert Activity Transitions beim Start einer Activity?",
-      options: ["ActivityOptions", "AnimationUtils", "MediaPlayer", "IntentFilter"],
-      answer: 0,
-      explain: "Dazu verwendet man ActivityOptions.makeSceneTransitionAnimation(...)."
-    },
+
+    // Wahr/Falsch
     {
       category: "Wahr/Falsch",
       q: "translate gehört zu View Animationen.",
       options: ["Richtig", "Falsch"],
       answer: 0,
-      explain: "Richtig. translate ist eine View Animation.",
-      mistake: true
+      explain: "translate ist eine View Animation."
     },
     {
       category: "Wahr/Falsch",
       q: "Explode ist eine View Animation.",
       options: ["Richtig", "Falsch"],
       answer: 1,
-      explain: "Falsch. Explode ist eine Transition."
+      explain: "Explode ist eine Transition."
     },
     {
       category: "Wahr/Falsch",
       q: "ObjectAnimator gehört zu Property Animation.",
       options: ["Richtig", "Falsch"],
       answer: 0,
-      explain: "Richtig. ObjectAnimator gehört zur Property Animation."
+      explain: "ObjectAnimator gehört zu Property Animation."
+    },
+    {
+      category: "Wahr/Falsch",
+      q: "MediaRecorder kann Audio aufnehmen.",
+      options: ["Richtig", "Falsch"],
+      answer: 0,
+      explain: "MediaRecorder wird für Audioaufnahmen verwendet."
     }
   ];
 
@@ -634,7 +617,7 @@
   function normalizeText(text) {
     return text
             .toLowerCase()
-            .replace(/\\s\+/g, "")
+            .replace(/\s\+/g, "")
             .replace(/[():;.=]/g, "");
   }
 
@@ -660,7 +643,11 @@
       return;
     }
 
-    q.options.forEach((option, index) => {
+    const shuffledOptions = q.options
+            .map((option, index) => ({ option, index }))
+            .sort(() => Math.random() - 0.5);
+
+    shuffledOptions.forEach(({ option, index }) => {
       const btn = document.createElement("button");
       btn.className = "answer";
       btn.innerHTML = option;
