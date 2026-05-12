@@ -3,757 +3,326 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEDT Kotlin Quiz</title>
+  <title>Mini Clash Arena</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
+    * { box-sizing: border-box; user-select: none; }
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 850px;
-      background: #111827;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .badge {
-      background: #334155;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-    }
-
-    .card {
-      background: #020617;
-      border: 1px solid #1f2937;
-      border-radius: 20px;
-      padding: 24px;
-    }
-
-    .question {
-      font-size: 24px;
-      line-height: 1.35;
-      margin-bottom: 20px;
-    }
-
-    .category {
-      color: #93c5fd;
-      font-size: 14px;
-      margin-bottom: 8px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .answers {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    button {
-      border: none;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-
-    .answer {
-      background: #1f2937;
+      place-items: center;
+      background: radial-gradient(circle at top, #334155, #020617 70%);
+      font-family: Arial, Helvetica, sans-serif;
       color: white;
-      text-align: left;
-      border: 1px solid #374151;
-    }
-
-    .answer:hover {
-      transform: translateY(-2px);
-      background: #374151;
-    }
-
-    .correct {
-      background: #166534 !important;
-      border-color: #22c55e !important;
-    }
-
-    .wrong {
-      background: #7f1d1d !important;
-      border-color: #ef4444 !important;
-    }
-
-    .controls {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .primary {
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
-
-    .primary:hover {
-      background: #1d4ed8;
-    }
-
-    .secondary {
-      background: #334155;
-      color: white;
-    }
-
-    .secondary:hover {
-      background: #475569;
-    }
-
-    .feedback {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 14px;
-      display: none;
-      line-height: 1.45;
-    }
-
-    .feedback.show {
-      display: block;
-    }
-
-    .feedback.good {
-      background: rgba(22, 101, 52, 0.35);
-      border: 1px solid #22c55e;
-    }
-
-    .feedback.bad {
-      background: rgba(127, 29, 29, 0.35);
-      border: 1px solid #ef4444;
-    }
-
-    .progress-wrap {
-      height: 12px;
-      background: #1f2937;
-      border-radius: 999px;
-      margin: 18px 0;
       overflow: hidden;
     }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #22c55e, #3b82f6);
-      transition: 0.25s;
+    #wrap {
+      width: min(96vw, 520px);
+      position: relative;
     }
-
-    .start-screen,
-    .end-screen {
-      text-align: center;
-      padding: 30px 10px;
-    }
-
-    .start-screen p,
-    .end-screen p {
-      color: #cbd5e1;
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 22px 0;
-    }
-
-    .stat {
-      background: #1f2937;
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .stat strong {
+    canvas {
+      width: 100%;
+      height: auto;
       display: block;
-      font-size: 26px;
-      margin-bottom: 4px;
+      border: 5px solid #0f172a;
+      border-radius: 24px;
+      background: #14532d;
+      box-shadow: 0 24px 70px rgba(0,0,0,.45);
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .mode-select {
+    .hud {
+      margin-top: 12px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 20px;
+      gap: 10px;
     }
-
-    code {
-      background: #1f2937;
-      padding: 2px 6px;
-      border-radius: 6px;
-      color: #bfdbfe;
+    .bar {
+      background: rgba(15,23,42,.8);
+      border: 2px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.25);
     }
-
-    @media (max-width: 600px) {
-      .app {
-        padding: 18px;
-      }
-
-      .question {
-        font-size: 20px;
-      }
-
-      .stats,
-      .mode-select {
-        grid-template-columns: 1fr;
-      }
+    #elixirFill {
+      height: 16px;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      transition: width .15s linear;
     }
+    .elixirBox {
+      flex: 1;
+      height: 20px;
+      margin-left: 10px;
+      background: #1e1b4b;
+      border-radius: 999px;
+      padding: 2px;
+      border: 1px solid #8b5cf6;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .card {
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      padding: 10px 6px;
+      text-align: center;
+      background: linear-gradient(180deg, #1e293b, #020617);
+      box-shadow: 0 8px 18px rgba(0,0,0,.28);
+      transition: transform .12s, border-color .12s, opacity .12s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card.selected { border-color: #facc15; box-shadow: 0 0 20px rgba(250,204,21,.35); }
+    .card.disabled { opacity: .45; cursor: not-allowed; }
+    .emoji { font-size: 28px; display: block; }
+    .cost { color: #d8b4fe; font-weight: 800; }
+    #msg {
+      position: absolute;
+      left: 50%; top: 45%;
+      transform: translate(-50%, -50%);
+      font-size: 34px;
+      font-weight: 900;
+      text-align: center;
+      text-shadow: 0 5px 14px black;
+      pointer-events: none;
+    }
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      background: #facc15;
+      color: #111827;
+    }
+    .hint { opacity: .8; font-size: 13px; text-align: center; }
   </style>
 </head>
 <body>
-<main class="app">
-  <div class="topbar">
-    <h1>MEDT Kotlin Quiz</h1>
-    <div class="badge" id="highscoreBadge">Highscore: 0</div>
+<div id="wrap">
+  <canvas id="game" width="520" height="760"></canvas>
+  <div id="msg"></div>
+  <div class="hud">
+    <div class="bar">
+      <strong>Elixier: <span id="elixirText">5</span>/10</strong>
+      <div class="elixirBox"><div id="elixirFill"></div></div>
+      <button onclick="restart()">Restart</button>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="hint">Wähle eine Karte und klicke in deine untere Arena-Hälfte. Ziel: zerstöre den gegnerischen Königsturm.</div>
   </div>
-
-  <section id="startScreen" class="start-screen card">
-    <h2>Quizlet-Style Prüfungstraining</h2>
-    <p>
-      Trainiere MediaPlayer, Permissions, BroadcastReceiver, Animationen, Transitions,
-      Kotlin-Basics und besonders deine bisherigen Fehler.
-    </p>
-
-    <div class="mode-select">
-      <button class="primary" onclick="startQuiz('all')">Gesamter Stoff</button>
-      <button class="secondary" onclick="startQuiz('mistakes')">Nur Fehler-Themen</button>
-    </div>
-  </section>
-
-  <section id="quizScreen" class="hidden">
-    <div class="topbar">
-      <div class="badge" id="counterBadge">Frage 1 / 1</div>
-      <div class="badge" id="scoreBadge">Punkte: 0</div>
-      <div class="badge" id="streakBadge">Serie: 0</div>
-    </div>
-
-    <div class="progress-wrap">
-      <div class="progress" id="progress"></div>
-    </div>
-
-    <div class="card">
-      <div class="category" id="category"></div>
-      <div class="question" id="question"></div>
-      <div class="answers" id="answers"></div>
-
-      <div id="textAnswerWrap" class="hidden" style="margin-top:16px;">
-        <textarea id="textAnswer" placeholder="Antwort eingeben..." style="width:100%;min-height:120px;background:#111827;color:white;border:1px solid #374151;border-radius:14px;padding:14px;font-size:16px;resize:vertical;"></textarea>
-        <button class="primary" style="margin-top:12px;" onclick="submitTextAnswer()">Antwort prüfen</button>
-      </div>
-      <div class="feedback" id="feedback"></div>
-
-      <div class="controls">
-        <button class="primary hidden" id="nextBtn" onclick="nextQuestion()">Nächste Frage</button>
-        <button class="secondary" onclick="restart()">Neu starten</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="endScreen" class="end-screen card hidden">
-    <h2>Quiz beendet!</h2>
-    <div class="stats">
-      <div class="stat"><strong id="finalScore">0</strong>Punkte</div>
-      <div class="stat"><strong id="finalPercent">0%</strong>Richtig</div>
-      <div class="stat"><strong id="wrongCount">0</strong>Fehler</div>
-    </div>
-    <p id="endText"></p>
-    <div class="controls" style="justify-content:center;">
-      <button class="primary" onclick="startQuiz('all')">Nochmal alles</button>
-      <button class="secondary" onclick="startWrongOnly()">Nur falsche wiederholen</button>
-    </div>
-  </section>
-</main>
+</div>
 
 <script>
-  const questions = [
-    // Kotlin
-    {
-      category: "Kotlin",
-      type: "text",
-      q: "Schreibe eine unveränderbare String-Konstante appName mit dem Wert MusicApp.",
-      answerText: "val appName: String = \"MusicApp\"",
-      explain: "Unveränderbare Werte werden mit val erstellt."
-    },
-    {
-      category: "Kotlin",
-      q: "Was bedeutet das ? in String??",
-      options: ["nullable", "private", "public", "immutable"],
-      answer: 0,
-      explain: "String? bedeutet, dass null erlaubt ist."
-    },
-    {
-      category: "Kotlin",
-      type: "text",
-      q: "Schreibe eine veränderbare Integer-Variable counter mit Wert 0.",
-      answerText: "var counter: Int = 0",
-      explain: "Veränderbare Variablen werden mit var erstellt."
-    },
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
 
-    // MediaPlayer
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode pausiert Audio?",
-      options: ["pause()", "stop()", "prepare()", "release()"],
-      answer: 0,
-      explain: "pause() pausiert die Wiedergabe."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode gibt bool zurück, ob Audio gerade läuft?",
-      options: ["isPlaying()", "playing()", "isRunning()", "audioState()"],
-      answer: 0,
-      explain: "isPlaying() gibt true oder false zurück."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Wo liegen lokale Audiofiles normalerweise?",
-      options: ["res/raw", "res/layout", "res/audio", "assets/music"],
-      answer: 0,
-      explain: "Lokale Audiofiles liegen typischerweise in res/raw."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Methode springt zu einer Audioposition?",
-      options: ["jumpTo()", "seekTo()", "moveTo()", "goTo()"],
-      answer: 1,
-      explain: "seekTo() springt zu einer bestimmten Position."
-    },
-    {
-      category: "MediaPlayer",
-      q: "Welche Formate unterstützt MediaPlayer unter anderem?",
-      options: ["MP3 und AAC", "PSD und AI", "ZIP und RAR", "DOCX und XLSX"],
-      answer: 0,
-      explain: "MediaPlayer unterstützt z. B. MP3 und AAC."
-    },
-
-    // Permissions
-    {
-      category: "Permissions",
-      q: "Wo werden Install-time Permissions eingetragen?",
-      options: ["Manifest", "Gradle", "Layout", "styles.xml"],
-      answer: 0,
-      explain: "Install-time Permissions werden im Manifest eingetragen."
-    },
-    {
-      category: "Permissions",
-      q: "Welche Permission wird für Internetzugriff benötigt?",
-      options: ["android.permission.INTERNET", "android.permission.URL", "android.permission.WEB", "android.permission.STREAM"],
-      answer: 0,
-      explain: "Für Internetzugriff benötigt man android.permission.INTERNET."
-    },
-    {
-      category: "Permissions",
-      q: "Welche Runtime Permission wird für Audioaufnahme benötigt?",
-      options: ["RECORD_AUDIO", "INTERNET", "STREAM_AUDIO", "AUDIO_PERMISSION"],
-      answer: 0,
-      explain: "Audioaufnahme benötigt RECORD_AUDIO."
-    },
-    {
-      category: "Permissions",
-      type: "text",
-      q: "Wie heißt die Methode zum Anfragen von Runtime Permissions?",
-      answerText: "ActivityCompat.requestPermissions",
-      explain: "Permissions werden mit ActivityCompat.requestPermissions(...) angefragt."
-    },
-    {
-      category: "Permissions",
-      type: "text",
-      q: "Wie heißt die Callback-Methode für Permission-Ergebnisse?",
-      answerText: "onRequestPermissionsResult",
-      explain: "Das Ergebnis kommt in onRequestPermissionsResult()."
-    },
-
-    // BroadcastReceiver
-    {
-      category: "BroadcastReceiver",
-      q: "Von welcher Klasse erbt ein BroadcastReceiver?",
-      options: ["BroadcastReceiver", "IntentReceiver", "Activity", "ReceiverActivity"],
-      answer: 0,
-      explain: "BroadcastReceiver erbt von BroadcastReceiver."
-    },
-    {
-      category: "BroadcastReceiver",
-      type: "text",
-      q: "Welche Methode wird im BroadcastReceiver überschrieben?",
-      answerText: "onReceive",
-      explain: "BroadcastReceiver überschreibt onReceive()."
-    },
-    {
-      category: "BroadcastReceiver",
-      q: "Welche Methode registriert einen Receiver?",
-      options: ["registerReceiver()", "startReceiver()", "enableReceiver()", "addReceiver()"],
-      answer: 0,
-      explain: "Receiver werden mit registerReceiver() registriert."
-    },
-    {
-      category: "BroadcastReceiver",
-      q: "Welche Action gehört zum Flugmodus?",
-      options: ["Intent.ACTION_AIRPLANE_MODE_CHANGED", "Intent.FLIGHT_MODE", "Intent.AIRPLANE", "Intent.ACTION_FLIGHT"],
-      answer: 0,
-      explain: "Die Flugmodus-Action lautet Intent.ACTION_AIRPLANE_MODE_CHANGED."
-    },
-
-    // View Animation
-    {
-      category: "View Animation",
-      q: "Welche Begriffe gehören zu View Animationen?",
-      options: ["scale rotate alpha translate", "fade explode slide", "ObjectAnimator AnimatorSet", "MediaPlayer seekTo release"],
-      answer: 0,
-      explain: "scale, rotate, alpha und translate gehören zu View Animationen."
-    },
-    {
-      category: "View Animation",
-      q: "In welchem Ordner liegen XML-Animationen?",
-      options: ["res/anim", "res/layout", "res/raw", "res/transition"],
-      answer: 0,
-      explain: "Animationen liegen in res/anim."
-    },
-    {
-      category: "View Animation",
-      q: "Welche Klasse lädt XML-Animationen?",
-      options: ["AnimationUtils", "AnimatorLoader", "AnimationDrawable", "MediaAnimator"],
-      answer: 0,
-      explain: "AnimationUtils.loadAnimation() lädt XML-Animationen."
-    },
-
-    // Property Animation
-    {
-      category: "Property Animation",
-      q: "Welche Klasse wird für Property Animation verwendet?",
-      options: ["ObjectAnimator", "TranslateAnimation", "AnimationDrawable", "FrameAnimator"],
-      answer: 0,
-      explain: "Property Animation verwendet ObjectAnimator."
-    },
-    {
-      category: "Property Animation",
-      q: "Welche Property beschreibt Transparenz?",
-      options: ["alpha", "rotate", "translate", "scale"],
-      answer: 0,
-      explain: "alpha beschreibt Transparenz."
-    },
-    {
-      category: "Property Animation",
-      q: "Was passiert bei alpha von 1f zu 0f?",
-      options: ["View blendet aus", "View wird größer", "View dreht sich", "View bewegt sich"],
-      answer: 0,
-      explain: "Die View wird transparent bzw. blendet aus."
-    },
-
-    // Frame Animation
-    {
-      category: "Frame Animation",
-      type: "text",
-      q: "Welche Klasse gehört zu Frame Animationen?",
-      answerText: "AnimationDrawable",
-      explain: "Frame Animationen verwenden AnimationDrawable."
-    },
-    {
-      category: "Frame Animation",
-      q: "Welches XML-Element verwendet man bei Frame Animationen?",
-      options: ["<animation-list>", "<frame>", "<animator>", "<rotate>"],
-      answer: 0,
-      explain: "Frame Animationen verwenden <animation-list>."
-    },
-
-    // Transitions
-    {
-      category: "Transitions",
-      q: "Welche Begriffe sind Activity Transitions?",
-      options: ["fade slide explode", "alpha rotate scale", "seekTo start pause", "AnimatorSet ObjectAnimator"],
-      answer: 0,
-      explain: "Fade, Slide und Explode sind Activity Transitions."
-    },
-    {
-      category: "Transitions",
-      q: "Ab welchem API-Level funktionieren Activity Transitions?",
-      options: ["21", "14", "8", "30"],
-      answer: 0,
-      explain: "Transitions funktionieren ab API Level 21."
-    },
-    {
-      category: "Transitions",
-      type: "text",
-      q: "Wie lautet das vollständige Theme-Attribut für Activity Transitions?",
-      answerText: "android:windowActivityTransitions",
-      explain: "Das Attribut lautet android:windowActivityTransitions."
-    },
-    {
-      category: "Transitions",
-      type: "text",
-      q: "Welche Methode muss vor setContentView() aufgerufen werden?",
-      answerText: "getWindow().requestFeature",
-      explain: "getWindow().requestFeature(...) muss vor setContentView() aufgerufen werden."
-    },
-
-    // Wahr/Falsch
-    {
-      category: "Wahr/Falsch",
-      q: "translate gehört zu View Animationen.",
-      options: ["Richtig", "Falsch"],
-      answer: 0,
-      explain: "translate ist eine View Animation."
-    },
-    {
-      category: "Wahr/Falsch",
-      q: "Explode ist eine View Animation.",
-      options: ["Richtig", "Falsch"],
-      answer: 1,
-      explain: "Explode ist eine Transition."
-    },
-    {
-      category: "Wahr/Falsch",
-      q: "ObjectAnimator gehört zu Property Animation.",
-      options: ["Richtig", "Falsch"],
-      answer: 0,
-      explain: "ObjectAnimator gehört zu Property Animation."
-    },
-    {
-      category: "Wahr/Falsch",
-      q: "MediaRecorder kann Audio aufnehmen.",
-      options: ["Richtig", "Falsch"],
-      answer: 0,
-      explain: "MediaRecorder wird für Audioaufnahmen verwendet."
-    }
+  const cards = [
+    { name: 'Knight', emoji: '🛡️', cost: 3, hp: 110, dmg: 16, speed: .62, range: 20, rate: 42, color: '#60a5fa' },
+    { name: 'Goblin', emoji: '🗡️', cost: 2, hp: 58, dmg: 10, speed: .96, range: 18, rate: 25, color: '#22c55e' },
+    { name: 'Giant', emoji: '💪', cost: 5, hp: 260, dmg: 24, speed: .35, range: 24, rate: 60, color: '#fb923c', towerOnly: true },
+    { name: 'Archer', emoji: '🏹', cost: 3, hp: 62, dmg: 12, speed: .48, range: 105, rate: 38, color: '#f472b6' }
   ];
+  let selected = 0;
+  let units, towers, particles, elixir, enemyElixir, gameOver, lastTime, aiTimer;
 
-  let activeQuestions = [];
-  let currentIndex = 0;
-  let score = 0;
-  let streak = 0;
-  let answered = false;
-  let wrongQuestions = [];
-
-  const startScreen = document.getElementById("startScreen");
-  const quizScreen = document.getElementById("quizScreen");
-  const endScreen = document.getElementById("endScreen");
-  const categoryEl = document.getElementById("category");
-  const questionEl = document.getElementById("question");
-  const answersEl = document.getElementById("answers");
-  const feedbackEl = document.getElementById("feedback");
-  const nextBtn = document.getElementById("nextBtn");
-  const scoreBadge = document.getElementById("scoreBadge");
-  const streakBadge = document.getElementById("streakBadge");
-  const counterBadge = document.getElementById("counterBadge");
-  const progressEl = document.getElementById("progress");
-  const highscoreBadge = document.getElementById("highscoreBadge");
-
-  function shuffle(array) {
-    return [...array].sort(() => Math.random() - 0.5);
+  function resetState(){
+    units = [];
+    particles = [];
+    elixir = 5;
+    enemyElixir = 5;
+    gameOver = false;
+    aiTimer = 0;
+    towers = [
+      {team:'blue', x:260, y:660, hp:900, max:900, r:33, king:true},
+      {team:'blue', x:150, y:585, hp:520, max:520, r:25},
+      {team:'blue', x:370, y:585, hp:520, max:520, r:25},
+      {team:'red', x:260, y:100, hp:900, max:900, r:33, king:true},
+      {team:'red', x:150, y:175, hp:520, max:520, r:25},
+      {team:'red', x:370, y:175, hp:520, max:520, r:25}
+    ];
+    document.getElementById('msg').textContent = '';
   }
 
-  function updateHighscore() {
-    const highscore = localStorage.getItem("medtHighscore") || 0;
-    highscoreBadge.textContent = "Highscore: " + highscore;
-  }
+  function restart(){ resetState(); }
 
-  function startQuiz(mode) {
-    const pool = mode === "mistakes" ? questions.filter(q => q.mistake) : questions;
-    activeQuestions = shuffle(pool).map(q => ({ ...q }));
-    currentIndex = 0;
-    score = 0;
-    streak = 0;
-    wrongQuestions = [];
-    startScreen.classList.add("hidden");
-    endScreen.classList.add("hidden");
-    quizScreen.classList.remove("hidden");
-    showQuestion();
-  }
-
-  function startWrongOnly() {
-    if (wrongQuestions.length === 0) {
-      startQuiz("mistakes");
-      return;
-    }
-    activeQuestions = shuffle(wrongQuestions).map(q => ({ ...q }));
-    currentIndex = 0;
-    score = 0;
-    streak = 0;
-    wrongQuestions = [];
-    endScreen.classList.add("hidden");
-    quizScreen.classList.remove("hidden");
-    showQuestion();
-  }
-
-  function normalizeText(text) {
-    return text
-            .toLowerCase()
-            .replace(/\s\+/g, "")
-            .replace(/[():;.=]/g, "");
-  }
-
-  function showQuestion() {
-    answered = false;
-    nextBtn.classList.add("hidden");
-    feedbackEl.className = "feedback";
-    feedbackEl.textContent = "";
-    answersEl.innerHTML = "";
-    document.getElementById("textAnswerWrap").classList.add("hidden");
-    document.getElementById("textAnswer").value = "";
-
-    const q = activeQuestions[currentIndex];
-    categoryEl.textContent = q.category;
-    questionEl.innerHTML = q.q;
-    counterBadge.textContent = `Frage ${currentIndex + 1} / ${activeQuestions.length}`;
-    scoreBadge.textContent = `Punkte: ${score}`;
-    streakBadge.textContent = `Serie: ${streak}`;
-    progressEl.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
-
-    if (q.type === "text") {
-      document.getElementById("textAnswerWrap").classList.remove("hidden");
-      return;
-    }
-
-    const shuffledOptions = q.options
-            .map((option, index) => ({ option, index }))
-            .sort(() => Math.random() - 0.5);
-
-    shuffledOptions.forEach(({ option, index }) => {
-      const btn = document.createElement("button");
-      btn.className = "answer";
-      btn.innerHTML = option;
-      btn.onclick = () => checkAnswer(index, btn);
-      answersEl.appendChild(btn);
+  function makeUnit(card, team, x, y){
+    units.push({
+      ...card,
+      team, x, y,
+      hp: card.hp,
+      max: card.hp,
+      cd: Math.random()*20,
+      radius: card.name === 'Giant' ? 17 : 13,
+      vx: 0, vy: 0
     });
   }
 
-  function submitTextAnswer() {
-    if (answered) return;
-
-    const q = activeQuestions[currentIndex];
-    const userAnswer = normalizeText(document.getElementById("textAnswer").value);
-    const correctAnswer = normalizeText(q.answerText);
-
-    answered = true;
-
-    if (userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
-      streak++;
-      score += 12 + Math.min(streak * 2, 10);
-      feedbackEl.className = "feedback show good";
-      feedbackEl.innerHTML = "✅ Richtig!<br>" + q.explain;
-    } else {
-      streak = 0;
-      wrongQuestions.push(q);
-      feedbackEl.className = "feedback show bad";
-      feedbackEl.innerHTML = `❌ Falsch.<br><strong>Richtige Antwort:</strong><br><code>${q.answerText}</code><br><br>${q.explain}`;
+  function spawn(cardIndex, team, x, y){
+    const c = cards[cardIndex];
+    makeUnit(c, team, x, y);
+    if(c.name === 'Goblin') {
+      makeUnit(c, team, x-18, y+8*(team==='blue'?-1:1));
+      makeUnit(c, team, x+18, y+8*(team==='blue'?-1:1));
     }
-
-    scoreBadge.textContent = `Punkte: ${score}`;
-    streakBadge.textContent = `Serie: ${streak}`;
-    nextBtn.classList.remove("hidden");
+    if(c.name === 'Archer') makeUnit(c, team, x+16, y);
   }
 
-  function checkAnswer(selectedIndex, selectedBtn) {
-    if (answered) return;
-    answered = true;
+  function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+  function aliveTargets(team){
+    return [...units.filter(u=>u.team!==team), ...towers.filter(t=>t.team!==team && t.hp>0)];
+  }
+  function nearest(obj, team, towerOnly=false){
+    const list = towerOnly ? towers.filter(t=>t.team!==team && t.hp>0) : aliveTargets(team);
+    let best=null, bd=Infinity;
+    for(const t of list){ const d=dist(obj,t); if(d<bd){bd=d; best=t;} }
+    return best;
+  }
+  function hit(target, dmg){
+    target.hp -= dmg;
+    particles.push({x:target.x,y:target.y,life:18,text:'-'+dmg});
+  }
 
-    const q = activeQuestions[currentIndex];
-    const buttons = document.querySelectorAll(".answer");
-    buttons.forEach((btn, index) => {
-      btn.disabled = true;
-      if (index === q.answer) btn.classList.add("correct");
+  function drawArena(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = '#166534'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#15803d';
+    for(let y=0;y<H;y+=80) for(let x=(y/80)%2?0:40;x<W;x+=80) ctx.fillRect(x,y,40,40);
+    ctx.fillStyle = '#38bdf8'; ctx.fillRect(0,H/2-8,W,16);
+    ctx.fillStyle = '#92400e'; ctx.fillRect(115,H/2-18,70,36); ctx.fillRect(335,H/2-18,70,36);
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(0,H/2-2,W,4);
+    ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.fillRect(0,H/2,W,H/2);
+  }
+
+  function drawTower(t){
+    ctx.save();
+    ctx.translate(t.x,t.y);
+    ctx.fillStyle = t.team === 'blue' ? '#2563eb' : '#dc2626';
+    ctx.beginPath(); ctx.arc(0,0,t.r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#facc15'; ctx.fillRect(-t.r*.55,-t.r-10,t.r*1.1,14);
+    if(t.king){ ctx.font='26px serif'; ctx.textAlign='center'; ctx.fillText('👑',0,8); }
+    ctx.restore();
+    hpBar(t.x-t.r, t.y+t.r+8, t.r*2, 7, t.hp/t.max);
+  }
+
+  function hpBar(x,y,w,h,p){
+    ctx.fillStyle='rgba(0,0,0,.45)'; ctx.fillRect(x,y,w,h);
+    ctx.fillStyle=p>.5?'#22c55e':p>.25?'#facc15':'#ef4444'; ctx.fillRect(x,y,w*Math.max(0,p),h);
+  }
+  function drawUnit(u){
+    ctx.save(); ctx.translate(u.x,u.y);
+    ctx.fillStyle = u.color;
+    ctx.beginPath(); ctx.arc(0,0,u.radius,0,Math.PI*2); ctx.fill();
+    ctx.font = '18px serif'; ctx.textAlign='center'; ctx.fillText(u.emoji,0,6);
+    ctx.restore();
+    hpBar(u.x-16,u.y-u.radius-12,32,5,u.hp/u.max);
+  }
+
+  function update(dt){
+    if(gameOver) return;
+    elixir = Math.min(10, elixir + dt*0.00055);
+    enemyElixir = Math.min(10, enemyElixir + dt*0.0005);
+    aiTimer -= dt;
+    if(aiTimer <= 0){
+      const playable = cards.map((c,i)=>({c,i})).filter(o=>o.c.cost<=enemyElixir);
+      if(playable.length){
+        const pick = playable[Math.floor(Math.random()*playable.length)];
+        enemyElixir -= pick.c.cost;
+        spawn(pick.i,'red', Math.random()<.5?150:370, 250 + Math.random()*55);
+      }
+      aiTimer = 1100 + Math.random()*1600;
+    }
+
+    for(const u of units){
+      if(u.hp<=0) continue;
+      let target = nearest(u,u.team,u.towerOnly);
+      if(!target) continue;
+      const d = dist(u,target);
+      if(d > u.range + (target.r||target.radius||12)){
+        const ang = Math.atan2(target.y-u.y, target.x-u.x);
+        u.x += Math.cos(ang)*u.speed*dt/16;
+        u.y += Math.sin(ang)*u.speed*dt/16;
+      } else {
+        u.cd -= dt/16;
+        if(u.cd<=0){ hit(target,u.dmg); u.cd = u.rate; }
+      }
+    }
+
+    for(const t of towers.filter(t=>t.hp>0)){
+      t.cd = (t.cd||0)-dt/16;
+      const enemies = units.filter(u=>u.team!==t.team && u.hp>0 && dist(t,u)<150);
+      if(enemies.length && t.cd<=0){
+        enemies.sort((a,b)=>dist(t,a)-dist(t,b));
+        hit(enemies[0], 20);
+        t.cd = 32;
+      }
+    }
+
+    units = units.filter(u=>u.hp>0);
+    towers.forEach(t=>{ if(t.hp<0)t.hp=0; });
+    particles.forEach(p=>p.life--);
+    particles = particles.filter(p=>p.life>0);
+
+    const blueKing = towers.find(t=>t.team==='blue'&&t.king);
+    const redKing = towers.find(t=>t.team==='red'&&t.king);
+    if(blueKing.hp<=0 || redKing.hp<=0){
+      gameOver = true;
+      document.getElementById('msg').textContent = redKing.hp<=0 ? 'SIEG! 👑' : 'NIEDERLAGE!';
+    }
+  }
+
+  function draw(){
+    drawArena();
+    towers.filter(t=>t.hp>0).forEach(drawTower);
+    units.forEach(drawUnit);
+    ctx.font='18px Arial'; ctx.textAlign='center';
+    for(const p of particles){ ctx.fillStyle='rgba(255,255,255,'+(p.life/18)+')'; ctx.fillText(p.text,p.x,p.y-(18-p.life)); }
+  }
+
+  function loop(ts){
+    const dt = Math.min(40, ts - lastTime || 16); lastTime = ts;
+    update(dt); draw(); updateUI(); requestAnimationFrame(loop);
+  }
+
+  canvas.addEventListener('click', e=>{
+    if(gameOver) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX-rect.left)*W/rect.width;
+    const y = (e.clientY-rect.top)*H/rect.height;
+    const c = cards[selected];
+    if(y < H/2+20) return flash('Nur in deiner Hälfte!');
+    if(elixir < c.cost) return flash('Nicht genug Elixier!');
+    elixir -= c.cost;
+    spawn(selected,'blue',x,y);
+  });
+  function flash(text){ const m=document.getElementById('msg'); m.textContent=text; setTimeout(()=>{ if(!gameOver)m.textContent=''; },650); }
+
+  function buildCards(){
+    const root = document.getElementById('cards');
+    root.innerHTML='';
+    cards.forEach((c,i)=>{
+      const el=document.createElement('div');
+      el.className='card';
+      el.innerHTML=`<span class="emoji">${c.emoji}</span><strong>${c.name}</strong><br><span class="cost">${c.cost} Elixier</span>`;
+      el.onclick=()=>{ selected=i; updateUI(); };
+      root.appendChild(el);
     });
-
-    if (selectedIndex === q.answer) {
-      streak++;
-      score += 10 + Math.min(streak * 2, 10);
-      feedbackEl.className = "feedback show good";
-      feedbackEl.innerHTML = "✅ Richtig!<br>" + q.explain;
-    } else {
-      streak = 0;
-      selectedBtn.classList.add("wrong");
-      wrongQuestions.push(q);
-      feedbackEl.className = "feedback show bad";
-      feedbackEl.innerHTML = "❌ Falsch.<br>" + q.explain;
-    }
-
-    scoreBadge.textContent = `Punkte: ${score}`;
-    streakBadge.textContent = `Serie: ${streak}`;
-    nextBtn.classList.remove("hidden");
+  }
+  function updateUI(){
+    document.getElementById('elixirText').textContent = Math.floor(elixir);
+    document.getElementById('elixirFill').style.width = (elixir*10)+'%';
+    [...document.querySelectorAll('.card')].forEach((el,i)=>{
+      el.classList.toggle('selected',i===selected);
+      el.classList.toggle('disabled',cards[i].cost>elixir);
+    });
   }
 
-  function nextQuestion() {
-    currentIndex++;
-    if (currentIndex >= activeQuestions.length) {
-      finishQuiz();
-    } else {
-      showQuestion();
-    }
-  }
-
-  function finishQuiz() {
-    quizScreen.classList.add("hidden");
-    endScreen.classList.remove("hidden");
-    progressEl.style.width = "100%";
-
-    const correct = activeQuestions.length - wrongQuestions.length;
-    const percent = Math.round((correct / activeQuestions.length) * 100);
-
-    document.getElementById("finalScore").textContent = score;
-    document.getElementById("finalPercent").textContent = percent + "%";
-    document.getElementById("wrongCount").textContent = wrongQuestions.length;
-
-    const oldHighscore = Number(localStorage.getItem("medtHighscore") || 0);
-    if (score > oldHighscore) {
-      localStorage.setItem("medtHighscore", score);
-    }
-    updateHighscore();
-
-    let text = "";
-    if (percent >= 90) text = "Sehr stark! Du bist fast prüfungsbereit.";
-    else if (percent >= 75) text = "Gut! Wiederhole nur noch die falschen Fragen.";
-    else if (percent >= 50) text = "Okay, aber Frame Animation, Permissions und Transitions nochmal üben.";
-    else text = "Noch nicht sicher genug. Starte am besten den Fehler-Modus.";
-
-    document.getElementById("endText").textContent = text;
-  }
-
-  function restart() {
-    startScreen.classList.remove("hidden");
-    quizScreen.classList.add("hidden");
-    endScreen.classList.add("hidden");
-  }
-
-  updateHighscore();
+  buildCards(); resetState(); requestAnimationFrame(loop);
 </script>
 </body>
 </html>
