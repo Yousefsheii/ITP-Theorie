@@ -635,7 +635,7 @@
     return text
             .toLowerCase()
             .replace(/\\s\+/g, "")
-            .replace(/[();]/g, "");
+            .replace(/[():;.=]/g, "");
   }
 
   function showQuestion() {
