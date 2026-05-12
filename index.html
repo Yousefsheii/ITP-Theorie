@@ -275,6 +275,11 @@
       <div class="category" id="category"></div>
       <div class="question" id="question"></div>
       <div class="answers" id="answers"></div>
+
+      <div id="textAnswerWrap" class="hidden" style="margin-top:16px;">
+        <textarea id="textAnswer" placeholder="Antwort eingeben..." style="width:100%;min-height:120px;background:#111827;color:white;border:1px solid #374151;border-radius:14px;padding:14px;font-size:16px;resize:vertical;"></textarea>
+        <button class="primary" style="margin-top:12px;" onclick="submitTextAnswer()">Antwort prüfen</button>
+      </div>
       <div class="feedback" id="feedback"></div>
 
       <div class="controls">
@@ -301,6 +306,46 @@
 
 <script>
   const questions = [
+    {
+      category: "Code Frage",
+      type: "text",
+      q: "Schreibe die Kotlin-Codezeile für eine veränderbare String-Variable namens songTitle, die auch null sein darf.",
+      answerText: "var songTitle: String? = null",
+      explain: "Eine veränderbare nullable String-Variable schreibt man mit var und String?.",
+      mistake: true
+    },
+    {
+      category: "Code Frage",
+      type: "text",
+      q: "Welche Methode wird verwendet, um Runtime Permissions anzufragen?",
+      answerText: "ActivityCompat.requestPermissions",
+      explain: "Runtime Permissions werden mit ActivityCompat.requestPermissions(...) angefragt.",
+      mistake: true
+    },
+    {
+      category: "Code Frage",
+      type: "text",
+      q: "Wie heißt die Callback-Methode für das Ergebnis einer Permission-Anfrage?",
+      answerText: "onRequestPermissionsResult",
+      explain: "Das Ergebnis der Anfrage kommt in onRequestPermissionsResult().",
+      mistake: true
+    },
+    {
+      category: "Code Frage",
+      type: "text",
+      q: "Welche Klasse gehört zu Frame Animationen?",
+      answerText: "AnimationDrawable",
+      explain: "Frame Animationen werden mit AnimationDrawable umgesetzt.",
+      mistake: true
+    },
+    {
+      category: "Code Frage",
+      type: "text",
+      q: "Wie lautet das vollständige Theme-Attribut zum Aktivieren von Activity Transitions?",
+      answerText: "android:windowActivityTransitions",
+      explain: "Das vollständige Attribut lautet android:windowActivityTransitions.",
+      mistake: true
+    },
     {
       category: "MediaPlayer",
       q: "Welche zwei Hauptmöglichkeiten gibt es, Audio mit dem MediaPlayer abzuspielen?",
@@ -586,12 +631,21 @@
     showQuestion();
   }
 
+  function normalizeText(text) {
+    return text
+            .toLowerCase()
+            .replace(/\\s\+/g, "")
+            .replace(/[();]/g, "");
+  }
+
   function showQuestion() {
     answered = false;
     nextBtn.classList.add("hidden");
     feedbackEl.className = "feedback";
     feedbackEl.textContent = "";
     answersEl.innerHTML = "";
+    document.getElementById("textAnswerWrap").classList.add("hidden");
+    document.getElementById("textAnswer").value = "";
 
     const q = activeQuestions[currentIndex];
     categoryEl.textContent = q.category;
@@ -601,6 +655,11 @@
     streakBadge.textContent = `Serie: ${streak}`;
     progressEl.style.width = `${(currentIndex / activeQuestions.length) * 100}%`;
 
+    if (q.type === "text") {
+      document.getElementById("textAnswerWrap").classList.remove("hidden");
+      return;
+    }
+
     q.options.forEach((option, index) => {
       const btn = document.createElement("button");
       btn.className = "answer";
@@ -608,6 +667,32 @@
       btn.onclick = () => checkAnswer(index, btn);
       answersEl.appendChild(btn);
     });
+  }
+
+  function submitTextAnswer() {
+    if (answered) return;
+
+    const q = activeQuestions[currentIndex];
+    const userAnswer = normalizeText(document.getElementById("textAnswer").value);
+    const correctAnswer = normalizeText(q.answerText);
+
+    answered = true;
+
+    if (userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)) {
+      streak++;
+      score += 12 + Math.min(streak * 2, 10);
+      feedbackEl.className = "feedback show good";
+      feedbackEl.innerHTML = "✅ Richtig!<br>" + q.explain;
+    } else {
+      streak = 0;
+      wrongQuestions.push(q);
+      feedbackEl.className = "feedback show bad";
+      feedbackEl.innerHTML = `❌ Falsch.<br><strong>Richtige Antwort:</strong><br><code>${q.answerText}</code><br><br>${q.explain}`;
+    }
+
+    scoreBadge.textContent = `Punkte: ${score}`;
+    streakBadge.textContent = `Serie: ${streak}`;
+    nextBtn.classList.remove("hidden");
   }
 
   function checkAnswer(selectedIndex, selectedBtn) {
