@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEDT VueJS Prüfung Quiz</title>
+  <title>MEDT Prüfung Quiz</title>
 
   <style>
+
     body{
       margin:0;
       background:#020617;
       color:white;
-      font-family:Arial;
+      font-family:Arial, Helvetica, sans-serif;
       padding:20px;
     }
 
@@ -22,26 +23,25 @@
     h1{
       text-align:center;
       color:#38bdf8;
-      margin-bottom:30px;
+      margin-bottom:25px;
     }
 
     .quiz-box{
       background:#111827;
-      padding:25px;
-      border-radius:20px;
-      margin-bottom:20px;
-      box-shadow:0 0 25px rgba(0,0,0,.4);
+      border-radius:22px;
+      padding:30px;
+      box-shadow:0 0 30px rgba(0,0,0,.4);
     }
 
     .question{
       font-size:24px;
-      margin-bottom:20px;
       line-height:1.5;
+      margin-bottom:20px;
     }
 
     button{
       width:100%;
-      padding:15px;
+      padding:16px;
       margin:10px 0;
       border:none;
       border-radius:14px;
@@ -65,8 +65,19 @@
     }
 
     #nextBtn{
+      margin-top:20px;
       background:#0ea5e9;
       font-weight:bold;
+    }
+
+    .code{
+      background:#0f172a;
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:20px;
+      overflow:auto;
+      color:#38bdf8;
+      font-family:monospace;
     }
 
     #score{
@@ -75,15 +86,13 @@
       margin-top:30px;
     }
 
-    .code{
-      background:#0f172a;
-      padding:15px;
-      border-radius:12px;
-      margin-top:15px;
-      overflow:auto;
-      color:#38bdf8;
-      font-family:monospace;
+    .result{
+      background:#111827;
+      padding:30px;
+      border-radius:20px;
+      text-align:center;
     }
+
   </style>
 </head>
 
@@ -91,7 +100,7 @@
 
 <div class="container">
 
-  <h1>MEDT VueJS / LocalStorage / Prototyping Quiz</h1>
+  <h1>MEDT VueJS / Prototyping / Figma Quiz</h1>
 
   <div class="quiz-box">
 
@@ -114,111 +123,56 @@
   const quiz = [
 
     {
-      q:"Was ist eine Vue-Komponente?",
+      q:"Warum muss data() in Vue als Funktion definiert werden?",
       a:[
-        "Eine wiederverwendbare UI-Einheit",
-        "Eine Datenbank",
-        "Ein CSS Framework",
-        "Ein Browser"
+        "Weil jede Komponente eigene reaktive Daten benötigt",
+        "Weil props sonst nicht funktionieren",
+        "Weil Vue keine Objekte erlaubt",
+        "Weil computed deaktiviert wird"
       ],
       correct:0
     },
 
     {
-      q:"Wo werden Komponenten normalerweise gespeichert?",
+      q:"Welche Aussage zu props ist korrekt?",
       a:[
-        "router",
-        "assets",
-        "components",
-        "public"
-      ],
-      correct:2
-    },
-
-    {
-      q:"Wofür werden props verwendet?",
-      a:[
-        "Zur Datenübergabe",
-        "Für CSS",
-        "Für Events",
-        "Für Schleifen"
+        "Sie dienen zur Datenübergabe zwischen Komponenten",
+        "Sie speichern automatisch LocalStorage",
+        "Sie ersetzen methods",
+        "Sie funktionieren nur mit Zahlen"
       ],
       correct:0
     },
 
     {
-      q:"Warum muss data() eine Funktion sein?",
+      q:"Was macht computed in VueJS?",
       a:[
-        "Weil Vue es verlangt",
-        "Damit jede Komponente eigene Daten hat",
-        "Für CSS",
-        "Wegen HTML"
-      ],
-      correct:1
-    },
-
-    {
-      q:"Was macht v-on:click?",
-      a:[
-        "Es reagiert auf Klicks",
-        "Es erstellt Komponenten",
-        "Es speichert Daten",
-        "Es lädt HTML"
+        "Berechnet Werte abhängig von Daten",
+        "Erstellt automatisch Komponenten",
+        "Löscht Arrays",
+        "Speichert Daten im Browser"
       ],
       correct:0
     },
 
     {
-      q:"Wofür wird $emit() verwendet?",
+      q:"Welche Aussage zu computed stimmt?",
       a:[
-        "Zum Speichern",
-        "Zum Auslösen von Events",
-        "Zum Löschen",
-        "Für CSS"
-      ],
-      correct:1
-    },
-
-    {
-      q:"Können mit $emit() Parameter übergeben werden?",
-      a:[
-        "Ja",
-        "Nein",
-        "Nur Zahlen",
-        "Nur Strings"
+        "Computed Properties werden gecacht",
+        "Computed wird nur einmal ausgeführt",
+        "Computed ersetzt v-for",
+        "Computed kann keine Arrays verwenden"
       ],
       correct:0
     },
 
     {
-      q:"Was macht v-for?",
+      q:"Warum wird toLowerCase() oft bei Suchfunktionen verwendet?",
       a:[
-        "Es löscht Arrays",
-        "Es rendert Elemente mehrfach",
-        "Es startet Vue",
-        "Es speichert Daten"
-      ],
-      correct:1
-    },
-
-    {
-      q:"Was macht :key bei v-for?",
-      a:[
-        "Verbessert Identifikation von Elementen",
-        "Erstellt CSS",
-        "Startet Events",
-        "Löscht Komponenten"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Wofür verwendet man computed?",
-      a:[
-        "Für berechnete Werte",
-        "Für HTML",
-        "Für CSS",
-        "Für Imports"
+        "Damit Groß-/Kleinschreibung ignoriert wird",
+        "Weil includes sonst abstürzt",
+        "Für bessere Performance",
+        "Weil filter es verlangt"
       ],
       correct:0
     },
@@ -226,226 +180,254 @@
     {
       q:"Was macht filter()?",
       a:[
-        "Filtert Arrays",
-        "Löscht Arrays",
-        "Speichert Arrays",
-        "Sortiert HTML"
+        "Es erzeugt ein neues gefiltertes Array",
+        "Es löscht automatisch Elemente",
+        "Es verändert das Originalarray direkt",
+        "Es funktioniert nur mit Strings"
       ],
       correct:0
     },
 
     {
-      q:"Was macht includes()?",
+      q:"Was passiert hier?",
+      code:`<button v-on:click="$emit('remove', id)">`,
       a:[
-        "Durchsucht Texte",
-        "Speichert Daten",
-        "Erstellt Events",
-        "Löscht HTML"
+        "Ein Event wird mit Parameter ausgelöst",
+        "Die Seite wird neu geladen",
+        "Ein CSS Effekt startet",
+        "Eine Komponente wird importiert"
       ],
       correct:0
     },
 
     {
-      q:"Warum verwendet man toLowerCase() bei Suchfunktionen?",
+      q:"Welche Aufgabe hat v-bind:key?",
       a:[
-        "Für Groß/Kleinschreibung ignorieren",
-        "Für Zahlen",
+        "Elemente eindeutig identifizieren",
+        "Events speichern",
+        "CSS aktivieren",
+        "Arrays sortieren"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Welche Aussage zu LocalStorage stimmt?",
+      a:[
+        "Daten bleiben auch nach Browser-Neustart erhalten",
+        "Es speichert nur Zahlen",
+        "Es funktioniert nur online",
+        "Es löscht Daten automatisch"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Warum verwendet man JSON.stringify()?",
+      a:[
+        "Weil LocalStorage nur Strings speichert",
+        "Um Arrays schneller zu machen",
         "Für CSS",
-        "Für Events"
+        "Für computed"
       ],
       correct:0
     },
 
     {
-      q:"Was speichert LocalStorage?",
+      q:"Was macht JSON.parse()?",
       a:[
-        "Nur Strings",
-        "Nur Zahlen",
-        "Nur Arrays",
-        "Nur HTML"
+        "Es wandelt JSON Strings zurück in Objekte",
+        "Es löscht LocalStorage",
+        "Es erzeugt HTML",
+        "Es speichert Arrays"
       ],
       correct:0
     },
 
     {
-      q:"Bleiben Daten im LocalStorage nach dem Schließen des Browsers erhalten?",
+      q:"Was beschreibt einen Sketch am besten?",
       a:[
-        "Ja",
-        "Nein",
-        "Nur manchmal",
-        "Nur bei Chrome"
+        "Eine grobe schnelle Ideenskizze",
+        "Einen fertigen klickbaren Prototyp",
+        "Ein Datenmodell",
+        "Eine Datenbankstruktur"
       ],
       correct:0
     },
 
     {
-      q:"Welche Funktion wandelt Objekte in Strings um?",
+      q:"Welche Aussage zu Wireframes stimmt?",
       a:[
-        "JSON.parse()",
-        "JSON.stringify()",
-        "toLowerCase()",
-        "filter()"
-      ],
-      correct:1
-    },
-
-    {
-      q:"Welche Funktion liest JSON wieder als Objekt?",
-      a:[
-        "JSON.parse()",
-        "JSON.stringify()",
-        "v-for",
-        "computed"
+        "Sie zeigen Struktur ohne echte Funktionalität",
+        "Sie enthalten immer echte Daten",
+        "Sie sind vollständig programmiert",
+        "Sie ersetzen Mockups"
       ],
       correct:0
     },
 
     {
-      q:"Kann man JavaScript-Objekte direkt in LocalStorage speichern?",
+      q:"Was ist typisch für Mockups?",
       a:[
-        "Nein",
-        "Ja",
-        "Nur Arrays",
-        "Nur Zahlen"
+        "Sie wirken sehr realistisch",
+        "Sie enthalten keine Designs",
+        "Sie bestehen nur aus Text",
+        "Sie haben nie Farben"
       ],
       correct:0
     },
 
     {
-      q:"Was ist ein Sketch?",
+      q:"Was beschreibt einen Prototypen?",
       a:[
-        "Grobe schnelle Skizze",
-        "Fertige App",
-        "Datenbank",
-        "Echter Code"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist ein Wireframe?",
-      a:[
-        "Struktur einer Oberfläche",
-        "Fertige Website",
+        "Ein vereinfachtes System mit Verhalten",
+        "Nur HTML ohne Funktion",
         "Eine Datenbank",
-        "Ein Server"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist ein Prototyp?",
-      a:[
-        "Vereinfachtes System mit Verhalten",
-        "Nur CSS",
-        "Eine Datenbank",
-        "Nur HTML"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist ein Mockup?",
-      a:[
-        "Sehr realistisches Design",
-        "Nur Text",
-        "Eine Datenbank",
-        "Eine Schleife"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was bedeutet horizontales Prototyping?",
-      a:[
-        "Viele Funktionen oberflächlich",
-        "Wenige Funktionen detailliert",
-        "Keine UI",
         "Nur CSS"
       ],
       correct:0
     },
 
     {
-      q:"Was bedeutet vertikales Prototyping?",
+      q:"Was ist horizontales Prototyping?",
       a:[
-        "Wenige Funktionen detailliert",
-        "Keine Funktionen",
-        "Nur Farben",
+        "Viele Funktionen oberflächlich simulieren",
+        "Wenige Funktionen vollständig entwickeln",
+        "Nur Backend entwickeln",
+        "Keine Benutzeroberfläche verwenden"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist vertikales Prototyping?",
+      a:[
+        "Wenige Funktionen detailliert umsetzen",
+        "Alle Funktionen grob darstellen",
+        "Nur Wireframes verwenden",
+        "Nur Navigation zeigen"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was bedeutet Low Fidelity?",
+      a:[
+        "Einfacher schneller Prototyp",
+        "Vollständig realistisches Produkt",
+        "Echte Datenbank",
+        "Finale fertige App"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was bedeutet High Fidelity?",
+      a:[
+        "Sehr realistischer detaillierter Prototyp",
+        "Grobe Papierzeichnung",
+        "Nur ein Konzept",
         "Nur Navigation"
       ],
       correct:0
     },
 
     {
-      q:"Was ist Low Fidelity?",
+      q:"Warum spart Prototyping Kosten?",
       a:[
-        "Einfacher ungenauer Prototyp",
-        "Fertige App",
-        "Datenbank",
-        "Echter Server"
+        "Weil Fehler früher entdeckt werden",
+        "Weil keine Entwickler benötigt werden",
+        "Weil Tests unnötig werden",
+        "Weil keine Designs notwendig sind"
       ],
       correct:0
     },
 
     {
-      q:"Was ist High Fidelity?",
+      q:"Welche Aussage zu Figma stimmt?",
       a:[
-        "Sehr realistischer Prototyp",
-        "Skizze",
-        "Wireframe",
-        "Keine Funktion"
+        "Figma wird häufig für UI/UX Design und Prototyping verwendet",
+        "Figma ist eine Datenbank",
+        "Figma ersetzt JavaScript",
+        "Figma funktioniert nur offline"
       ],
       correct:0
     },
 
     {
-      q:"Was ist richtig?",
+      q:"Wofür verwendet man Figma-Prototyping?",
       a:[
-        "Je später Fehler entdeckt werden desto teurer",
-        "Frühe Fehler sind teurer",
-        "Prototyping spart kein Geld",
-        "Usability ist unwichtig"
+        "Zum Simulieren von Benutzerinteraktionen",
+        "Zum Programmieren von Datenbanken",
+        "Zum Hosten von Webseiten",
+        "Zum Ausführen von VueJS"
       ],
       correct:0
     },
 
     {
-      q:"Was macht dieses Codebeispiel?",
-      code:`<button v-on:click="$emit('remove', index)">`,
+      q:"Was kann man in Figma verbinden?",
       a:[
-        "Event mit Parameter senden",
-        "Komponente löschen",
-        "CSS ändern",
-        "HTML rendern"
+        "Frames und Screens",
+        "Nur CSS Dateien",
+        "Nur Bilder",
+        "Nur Datenbanken"
       ],
       correct:0
     },
 
     {
-      q:"Was macht dieses Codebeispiel?",
-      code:`computed:{
- search(){
-   return this.sus.filter(...)
- }
-}`,
+      q:"Welche Aussage über Usability stimmt?",
       a:[
-        "Suchfunktion",
-        "CSS Animation",
-        "Import",
-        "Event Listener"
+        "Usability verbessert Benutzerfreundlichkeit",
+        "Usability betrifft nur Farben",
+        "Usability ist nur für Apps wichtig",
+        "Usability ersetzt Testing"
       ],
       correct:0
     },
 
     {
-      q:"Was macht dieses Codebeispiel?",
+      q:"Was ist ein Vorteil von High Fidelity Prototypen?",
+      a:[
+        "Realistischere Tests sind möglich",
+        "Sie benötigen kein Design",
+        "Sie enthalten keine Interaktion",
+        "Sie sind schneller als Skizzen"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist typisch für Low Fidelity Prototypen?",
+      a:[
+        "Schnell und günstig",
+        "Sehr detailliert",
+        "Immer vollständig interaktiv",
+        "Fertig programmiert"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was passiert bei diesem Code?",
       code:`localStorage.setItem("user", JSON.stringify(user));`,
       a:[
-        "Objekt speichern",
-        "Objekt löschen",
-        "HTML anzeigen",
-        "CSS ändern"
+        "Ein Objekt wird als String gespeichert",
+        "Ein Objekt wird gelöscht",
+        "Eine Komponente wird erstellt",
+        "Ein Event wird ausgelöst"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Welche Aussage zu Vue-Komponenten stimmt?",
+      a:[
+        "Sie kapseln HTML, CSS und JavaScript",
+        "Sie bestehen nur aus HTML",
+        "Sie ersetzen CSS",
+        "Sie können keine Events auslösen"
       ],
       correct:0
     }
@@ -461,6 +443,20 @@
   const score = document.getElementById("score");
   const code = document.getElementById("code");
 
+  function shuffle(array){
+
+    for(let i = array.length - 1; i > 0; i--){
+
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [array[i], array[j]] = [array[j], array[i]];
+
+    }
+
+    return array;
+
+  }
+
   function loadQuestion(){
 
     const q = quiz[current];
@@ -475,13 +471,20 @@
       code.innerHTML = "";
     }
 
-    q.a.forEach((answer,index)=>{
+    let shuffled = q.a.map((text,index)=>({
+      text,
+      correct:index === q.correct
+    }));
+
+    shuffle(shuffled);
+
+    shuffled.forEach(answer=>{
 
       const btn = document.createElement("button");
 
-      btn.textContent = answer;
+      btn.textContent = answer.text;
 
-      btn.onclick = ()=>checkAnswer(btn,index);
+      btn.onclick = ()=>checkAnswer(btn,answer.correct);
 
       answers.appendChild(btn);
 
@@ -489,20 +492,34 @@
 
   }
 
-  function checkAnswer(btn,index){
-
-    const correct = quiz[current].correct;
+  function checkAnswer(btn,isCorrect){
 
     const buttons = answers.querySelectorAll("button");
 
     buttons.forEach(b=>b.disabled=true);
 
-    if(index === correct){
+    if(isCorrect){
+
       btn.classList.add("correct");
+
       points++;
+
     }else{
+
       btn.classList.add("wrong");
-      buttons[correct].classList.add("correct");
+
+      buttons.forEach(b=>{
+
+        const q = quiz[current];
+
+        if(b.textContent === q.a[q.correct]){
+
+          b.classList.add("correct");
+
+        }
+
+      });
+
     }
 
   }
@@ -512,33 +529,39 @@
     current++;
 
     if(current < quiz.length){
+
       loadQuestion();
+
     }else{
+
       finishQuiz();
+
     }
 
   };
 
   function finishQuiz(){
 
-    document.querySelector(".quiz-box").style.display="none";
+    document.querySelector(".quiz-box").style.display = "none";
 
-    let note = "";
+    let text = "";
 
-    if(points >= 27){
-      note = "Sehr gut";
-    }else if(points >= 22){
-      note = "Gut";
-    }else if(points >= 17){
-      note = "Befriedigend";
+    if(points >= 24){
+      text = "Sehr gut";
+    }else if(points >= 18){
+      text = "Gut";
+    }else if(points >= 12){
+      text = "Befriedigend";
     }else{
-      note = "Weiter lernen";
+      text = "Mehr lernen";
     }
 
     score.innerHTML = `
-<h2>Quiz beendet!</h2>
+<div class="result">
+<h2>Quiz beendet</h2>
 <p>${points} / ${quiz.length} Punkte</p>
-<h3>${note}</h3>
+<h3>${text}</h3>
+</div>
 `;
 
   }
