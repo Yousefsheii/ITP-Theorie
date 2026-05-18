@@ -1,366 +1,551 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neon Bike Rider</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEDT VueJS Prüfung Quiz</title>
+
   <style>
-    * { box-sizing: border-box; user-select: none; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle at top, #172554, #020617 72%);
-      font-family: Arial, Helvetica, sans-serif;
-      color: white;
-      overflow: hidden;
+    body{
+      margin:0;
+      background:#020617;
+      color:white;
+      font-family:Arial;
+      padding:20px;
     }
-    #wrap { width: min(96vw, 900px); position: relative; }
-    canvas {
-      width: 100%;
-      height: auto;
-      display: block;
-      border: 4px solid #1e293b;
-      border-radius: 24px;
-      background: #020617;
-      box-shadow: 0 25px 80px rgba(0,0,0,.55), 0 0 40px rgba(34,211,238,.15);
+
+    .container{
+      max-width:1000px;
+      margin:auto;
     }
-    .hud {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-      text-shadow: 0 3px 12px black;
-      font-weight: 900;
+
+    h1{
+      text-align:center;
+      color:#38bdf8;
+      margin-bottom:30px;
     }
-    .panel {
-      background: rgba(15,23,42,.62);
-      border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(8px);
-      padding: 10px 13px;
-      border-radius: 16px;
-      line-height: 1.45;
+
+    .quiz-box{
+      background:#111827;
+      padding:25px;
+      border-radius:20px;
+      margin-bottom:20px;
+      box-shadow:0 0 25px rgba(0,0,0,.4);
     }
-    #msg {
-      position: absolute;
-      left: 50%; top: 46%;
-      transform: translate(-50%, -50%);
-      font-size: clamp(28px, 6vw, 60px);
-      font-weight: 1000;
-      text-align: center;
-      text-shadow: 0 8px 20px #000;
-      pointer-events: none;
-      white-space: nowrap;
+
+    .question{
+      font-size:24px;
+      margin-bottom:20px;
+      line-height:1.5;
     }
-    .controls {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+
+    button{
+      width:100%;
+      padding:15px;
+      margin:10px 0;
+      border:none;
+      border-radius:14px;
+      background:#1e293b;
+      color:white;
+      cursor:pointer;
+      font-size:17px;
+      transition:.2s;
     }
-    button {
-      border: 0;
-      border-radius: 18px;
-      padding: 14px 8px;
-      font-weight: 900;
-      font-size: 15px;
-      cursor: pointer;
-      color: white;
-      background: linear-gradient(180deg, #0891b2, #0f172a);
-      box-shadow: 0 10px 24px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.22);
+
+    button:hover{
+      background:#334155;
     }
-    button:active { transform: translateY(2px); }
-    .hint { text-align: center; margin-top: 9px; opacity: .78; font-size: 13px; }
-    @media (max-width: 600px) {
-      .controls { grid-template-columns: repeat(2, 1fr); }
-      .panel { font-size: 13px; }
+
+    .correct{
+      background:#16a34a !important;
+    }
+
+    .wrong{
+      background:#dc2626 !important;
+    }
+
+    #nextBtn{
+      background:#0ea5e9;
+      font-weight:bold;
+    }
+
+    #score{
+      text-align:center;
+      font-size:30px;
+      margin-top:30px;
+    }
+
+    .code{
+      background:#0f172a;
+      padding:15px;
+      border-radius:12px;
+      margin-top:15px;
+      overflow:auto;
+      color:#38bdf8;
+      font-family:monospace;
     }
   </style>
 </head>
+
 <body>
-<div id="wrap">
-  <canvas id="game" width="900" height="520"></canvas>
-  <div class="hud">
-    <div class="panel">
-      Score: <span id="score">0</span><br>
-      Coins: <span id="coins">0</span><br>
-      Best: <span id="best">0</span>
-    </div>
-    <div class="panel">
-      Gas: Space / ↑<br>
-      Rotate: A/D<br>
-      Restart: R
-    </div>
+
+<div class="container">
+
+  <h1>MEDT VueJS / LocalStorage / Prototyping Quiz</h1>
+
+  <div class="quiz-box">
+
+    <div id="question" class="question"></div>
+
+    <div id="code"></div>
+
+    <div id="answers"></div>
+
+    <button id="nextBtn">Nächste Frage</button>
+
   </div>
-  <div id="msg"></div>
-  <div class="controls">
-    <button id="leftBtn">⟲ Links</button>
-    <button id="gasBtn">⚡ Gas</button>
-    <button id="rightBtn">⟳ Rechts</button>
-    <button onclick="restart()">↻ Restart</button>
-  </div>
-  <div class="hint">Fahr über die Neon-Linie, sammle Coins und lande möglichst gerade. Auf Handy Buttons gedrückt halten.</div>
+
+  <div id="score"></div>
+
 </div>
 
 <script>
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
 
-  const keys = { gas:false, left:false, right:false };
-  let bike, camX, track, coins, particles, dead, score, best;
-  best = Number(localStorage.getItem('neonBikeBest') || 0);
-  document.getElementById('best').textContent = best;
+  const quiz = [
 
-  function rand(a,b){ return a + Math.random()*(b-a); }
-  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-  function lerp(a,b,t){ return a + (b-a)*t; }
+    {
+      q:"Was ist eine Vue-Komponente?",
+      a:[
+        "Eine wiederverwendbare UI-Einheit",
+        "Eine Datenbank",
+        "Ein CSS Framework",
+        "Ein Browser"
+      ],
+      correct:0
+    },
 
-  function makeTrack(){
-    track = [];
-    let x = -200, y = 360;
-    track.push({x,y});
-    while(x < 12000){
-      const type = Math.random();
-      const len = rand(150, 330);
-      x += len;
-      if(type < .22) y -= rand(65, 135);       // ramp up
-      else if(type < .46) y += rand(45, 115);  // ramp down
-      else if(type < .62) y += rand(-25, 25);  // flat-ish
-      else {                                  // jump gap shape
-        y -= rand(35, 85); x += rand(80, 150); y += rand(60, 130);
-      }
-      y = clamp(y, 160, 440);
-      track.push({x,y});
+    {
+      q:"Wo werden Komponenten normalerweise gespeichert?",
+      a:[
+        "router",
+        "assets",
+        "components",
+        "public"
+      ],
+      correct:2
+    },
+
+    {
+      q:"Wofür werden props verwendet?",
+      a:[
+        "Zur Datenübergabe",
+        "Für CSS",
+        "Für Events",
+        "Für Schleifen"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Warum muss data() eine Funktion sein?",
+      a:[
+        "Weil Vue es verlangt",
+        "Damit jede Komponente eigene Daten hat",
+        "Für CSS",
+        "Wegen HTML"
+      ],
+      correct:1
+    },
+
+    {
+      q:"Was macht v-on:click?",
+      a:[
+        "Es reagiert auf Klicks",
+        "Es erstellt Komponenten",
+        "Es speichert Daten",
+        "Es lädt HTML"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Wofür wird $emit() verwendet?",
+      a:[
+        "Zum Speichern",
+        "Zum Auslösen von Events",
+        "Zum Löschen",
+        "Für CSS"
+      ],
+      correct:1
+    },
+
+    {
+      q:"Können mit $emit() Parameter übergeben werden?",
+      a:[
+        "Ja",
+        "Nein",
+        "Nur Zahlen",
+        "Nur Strings"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht v-for?",
+      a:[
+        "Es löscht Arrays",
+        "Es rendert Elemente mehrfach",
+        "Es startet Vue",
+        "Es speichert Daten"
+      ],
+      correct:1
+    },
+
+    {
+      q:"Was macht :key bei v-for?",
+      a:[
+        "Verbessert Identifikation von Elementen",
+        "Erstellt CSS",
+        "Startet Events",
+        "Löscht Komponenten"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Wofür verwendet man computed?",
+      a:[
+        "Für berechnete Werte",
+        "Für HTML",
+        "Für CSS",
+        "Für Imports"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht filter()?",
+      a:[
+        "Filtert Arrays",
+        "Löscht Arrays",
+        "Speichert Arrays",
+        "Sortiert HTML"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht includes()?",
+      a:[
+        "Durchsucht Texte",
+        "Speichert Daten",
+        "Erstellt Events",
+        "Löscht HTML"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Warum verwendet man toLowerCase() bei Suchfunktionen?",
+      a:[
+        "Für Groß/Kleinschreibung ignorieren",
+        "Für Zahlen",
+        "Für CSS",
+        "Für Events"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was speichert LocalStorage?",
+      a:[
+        "Nur Strings",
+        "Nur Zahlen",
+        "Nur Arrays",
+        "Nur HTML"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Bleiben Daten im LocalStorage nach dem Schließen des Browsers erhalten?",
+      a:[
+        "Ja",
+        "Nein",
+        "Nur manchmal",
+        "Nur bei Chrome"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Welche Funktion wandelt Objekte in Strings um?",
+      a:[
+        "JSON.parse()",
+        "JSON.stringify()",
+        "toLowerCase()",
+        "filter()"
+      ],
+      correct:1
+    },
+
+    {
+      q:"Welche Funktion liest JSON wieder als Objekt?",
+      a:[
+        "JSON.parse()",
+        "JSON.stringify()",
+        "v-for",
+        "computed"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Kann man JavaScript-Objekte direkt in LocalStorage speichern?",
+      a:[
+        "Nein",
+        "Ja",
+        "Nur Arrays",
+        "Nur Zahlen"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist ein Sketch?",
+      a:[
+        "Grobe schnelle Skizze",
+        "Fertige App",
+        "Datenbank",
+        "Echter Code"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist ein Wireframe?",
+      a:[
+        "Struktur einer Oberfläche",
+        "Fertige Website",
+        "Eine Datenbank",
+        "Ein Server"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist ein Prototyp?",
+      a:[
+        "Vereinfachtes System mit Verhalten",
+        "Nur CSS",
+        "Eine Datenbank",
+        "Nur HTML"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist ein Mockup?",
+      a:[
+        "Sehr realistisches Design",
+        "Nur Text",
+        "Eine Datenbank",
+        "Eine Schleife"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was bedeutet horizontales Prototyping?",
+      a:[
+        "Viele Funktionen oberflächlich",
+        "Wenige Funktionen detailliert",
+        "Keine UI",
+        "Nur CSS"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was bedeutet vertikales Prototyping?",
+      a:[
+        "Wenige Funktionen detailliert",
+        "Keine Funktionen",
+        "Nur Farben",
+        "Nur Navigation"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist Low Fidelity?",
+      a:[
+        "Einfacher ungenauer Prototyp",
+        "Fertige App",
+        "Datenbank",
+        "Echter Server"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist High Fidelity?",
+      a:[
+        "Sehr realistischer Prototyp",
+        "Skizze",
+        "Wireframe",
+        "Keine Funktion"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was ist richtig?",
+      a:[
+        "Je später Fehler entdeckt werden desto teurer",
+        "Frühe Fehler sind teurer",
+        "Prototyping spart kein Geld",
+        "Usability ist unwichtig"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht dieses Codebeispiel?",
+      code:`<button v-on:click="$emit('remove', index)">`,
+      a:[
+        "Event mit Parameter senden",
+        "Komponente löschen",
+        "CSS ändern",
+        "HTML rendern"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht dieses Codebeispiel?",
+      code:`computed:{
+ search(){
+   return this.sus.filter(...)
+ }
+}`,
+      a:[
+        "Suchfunktion",
+        "CSS Animation",
+        "Import",
+        "Event Listener"
+      ],
+      correct:0
+    },
+
+    {
+      q:"Was macht dieses Codebeispiel?",
+      code:`localStorage.setItem("user", JSON.stringify(user));`,
+      a:[
+        "Objekt speichern",
+        "Objekt löschen",
+        "HTML anzeigen",
+        "CSS ändern"
+      ],
+      correct:0
     }
 
-    coins = [];
-    for(let i=3;i<track.length-2;i++){
-      if(Math.random() < .66){
-        const a = track[i], b = track[i+1];
-        const mx = (a.x+b.x)/2;
-        const my = (a.y+b.y)/2 - rand(45, 105);
-        coins.push({x:mx, y:my, got:false, pulse:Math.random()*10});
-      }
-    }
-  }
+  ];
 
-  function groundAt(x){
-    for(let i=0;i<track.length-1;i++){
-      const a=track[i], b=track[i+1];
-      if(x>=a.x && x<=b.x){
-        const t=(x-a.x)/(b.x-a.x);
-        const y=lerp(a.y,b.y,t);
-        const ang=Math.atan2(b.y-a.y,b.x-a.x);
-        return {y, ang, exists:true};
-      }
-    }
-    return {y:999, ang:0, exists:false};
-  }
+  let current = 0;
+  let points = 0;
 
-  function restart(){
-    makeTrack();
-    bike = {
-      x: 80, y: 250,
-      vx: 4.3, vy: 0,
-      angle: 0, av: 0,
-      radius: 22,
-      onGround: false,
-      trail: []
-    };
-    camX = 0; particles=[]; dead=false; score=0;
-    document.getElementById('msg').textContent = '';
-  }
+  const question = document.getElementById("question");
+  const answers = document.getElementById("answers");
+  const nextBtn = document.getElementById("nextBtn");
+  const score = document.getElementById("score");
+  const code = document.getElementById("code");
 
-  function crash(text){
-    if(dead) return;
-    dead = true;
-    document.getElementById('msg').innerHTML = text + '<br><span style="font-size:22px">Drück R oder Restart</span>';
-    best = Math.max(best, Math.floor(score));
-    localStorage.setItem('neonBikeBest', best);
-    document.getElementById('best').textContent = best;
-    for(let i=0;i<45;i++) particles.push({x:bike.x,y:bike.y,vx:rand(-5,5),vy:rand(-7,2),life:rand(25,55)});
-  }
+  function loadQuestion(){
 
-  function update(){
-    if(dead) return;
+    const q = quiz[current];
 
-    const gas = keys.gas;
-    if(gas) bike.vx += bike.onGround ? .08 : .025;
-    bike.vx = clamp(bike.vx, 2.2, 12.5);
-    bike.vy += .42;
+    question.textContent = (current+1)+". "+q.q;
 
-    if(keys.left) bike.av -= .018;
-    if(keys.right) bike.av += .018;
-    if(bike.onGround) bike.av *= .62;
-    else bike.av *= .992;
-    bike.angle += bike.av;
+    answers.innerHTML = "";
 
-    bike.x += bike.vx;
-    bike.y += bike.vy;
-
-    const g = groundAt(bike.x);
-    bike.onGround = false;
-    if(g.exists && bike.y + bike.radius > g.y){
-      const diff = Math.abs(normalize(bike.angle - g.ang));
-      if(bike.vy > 7.5 && diff > 1.05) crash('CRASH!');
-      bike.y = g.y - bike.radius;
-      bike.vy = Math.min(0, bike.vy * -.08);
-      bike.onGround = true;
-      bike.angle = lerpAngle(bike.angle, g.ang, .18);
-      bike.vx *= .997;
+    if(q.code){
+      code.innerHTML = `<div class="code">${q.code}</div>`;
+    }else{
+      code.innerHTML = "";
     }
 
-    if(bike.y > H + 200) crash('ABSTURZ!');
-    if(Math.abs(normalize(bike.angle)) > Math.PI*0.92 && bike.onGround) crash('AUF DEM KOPF!');
+    q.a.forEach((answer,index)=>{
 
-    bike.trail.push({x:bike.x, y:bike.y});
-    if(bike.trail.length > 35) bike.trail.shift();
+      const btn = document.createElement("button");
 
-    for(const c of coins){
-      c.pulse += .12;
-      if(!c.got && Math.hypot(bike.x-c.x,bike.y-c.y)<38){
-        c.got = true; score += 80;
-        for(let i=0;i<12;i++) particles.push({x:c.x,y:c.y,vx:rand(-2,2),vy:rand(-4,1),life:rand(14,30),coin:true});
-      }
+      btn.textContent = answer;
+
+      btn.onclick = ()=>checkAnswer(btn,index);
+
+      answers.appendChild(btn);
+
+    });
+
+  }
+
+  function checkAnswer(btn,index){
+
+    const correct = quiz[current].correct;
+
+    const buttons = answers.querySelectorAll("button");
+
+    buttons.forEach(b=>b.disabled=true);
+
+    if(index === correct){
+      btn.classList.add("correct");
+      points++;
+    }else{
+      btn.classList.add("wrong");
+      buttons[correct].classList.add("correct");
     }
 
-    particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=.18; p.life--; });
-    particles = particles.filter(p=>p.life>0);
-    camX = lerp(camX, bike.x - 210, .08);
-    score = Math.max(score, bike.x/7);
   }
 
-  function normalize(a){ while(a>Math.PI)a-=Math.PI*2; while(a<-Math.PI)a+=Math.PI*2; return a; }
-  function lerpAngle(a,b,t){ return a + normalize(b-a)*t; }
+  nextBtn.onclick = ()=>{
 
-  function drawGrid(){
-    const ox = -camX*.35 % 60;
-    ctx.strokeStyle = 'rgba(34,211,238,.12)';
-    ctx.lineWidth = 1;
-    for(let x=ox; x<W; x+=60){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-    for(let y=30; y<H; y+=60){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    current++;
 
-    ctx.fillStyle='rgba(14,165,233,.08)';
-    ctx.beginPath(); ctx.arc(720-camX*.1,80,95,0,Math.PI*2); ctx.fill();
-  }
-
-  function drawTrack(){
-    ctx.save(); ctx.translate(-camX,0);
-    ctx.lineJoin = 'round'; ctx.lineCap='round';
-    ctx.shadowColor = '#22d3ee'; ctx.shadowBlur = 18;
-    ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 8;
-    ctx.beginPath();
-    track.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = '#e0f2fe'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.restore();
-  }
-
-  function drawCoins(){
-    ctx.save(); ctx.translate(-camX,0);
-    for(const c of coins){
-      if(c.got || c.x < camX-80 || c.x > camX+W+80) continue;
-      const s = 1 + Math.sin(c.pulse)*.12;
-      ctx.save(); ctx.translate(c.x,c.y); ctx.scale(s,s);
-      ctx.shadowColor='#facc15'; ctx.shadowBlur=18;
-      ctx.fillStyle='#facc15'; ctx.beginPath(); ctx.arc(0,0,12,0,Math.PI*2); ctx.fill();
-      ctx.shadowBlur=0; ctx.fillStyle='#854d0e'; ctx.font='14px Arial'; ctx.textAlign='center'; ctx.fillText('$',0,5);
-      ctx.restore();
+    if(current < quiz.length){
+      loadQuestion();
+    }else{
+      finishQuiz();
     }
-    ctx.restore();
-  }
 
-  function drawBike(){
-    ctx.save(); ctx.translate(-camX,0);
+  };
 
-    ctx.strokeStyle = 'rgba(34,211,238,.24)'; ctx.lineWidth=3;
-    ctx.beginPath();
-    bike.trail.forEach((p,i)=> i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-    ctx.stroke();
+  function finishQuiz(){
 
-    ctx.translate(bike.x,bike.y); ctx.rotate(bike.angle);
-    ctx.shadowColor = '#a855f7'; ctx.shadowBlur = 18;
+    document.querySelector(".quiz-box").style.display="none";
 
-    // wheels
-    ctx.strokeStyle = '#67e8f9'; ctx.lineWidth = 5;
-    ctx.beginPath(); ctx.arc(-22,18,18,0,Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(24,18,18,0,Math.PI*2); ctx.stroke();
+    let note = "";
 
-    // frame
-    ctx.strokeStyle = '#f472b6'; ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(-22,18); ctx.lineTo(0,-7); ctx.lineTo(24,18); ctx.lineTo(-22,18); ctx.lineTo(7,18); ctx.lineTo(0,-7);
-    ctx.stroke();
-
-    // handlebar + rider
-    ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.moveTo(12,-2); ctx.lineTo(34,-12); ctx.lineTo(43,-10); ctx.stroke();
-    ctx.fillStyle = '#facc15'; ctx.beginPath(); ctx.arc(-2,-22,9,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle = '#facc15'; ctx.lineWidth=5;
-    ctx.beginPath(); ctx.moveTo(-1,-13); ctx.lineTo(4,4); ctx.lineTo(17,15); ctx.moveTo(4,4); ctx.lineTo(-13,15); ctx.stroke();
-
-    if(keys.gas){
-      ctx.shadowColor='#fb7185'; ctx.shadowBlur=24;
-      ctx.fillStyle='#fb7185';
-      ctx.beginPath(); ctx.moveTo(-45,12); ctx.lineTo(-78,4); ctx.lineTo(-55,24); ctx.fill();
+    if(points >= 27){
+      note = "Sehr gut";
+    }else if(points >= 22){
+      note = "Gut";
+    }else if(points >= 17){
+      note = "Befriedigend";
+    }else{
+      note = "Weiter lernen";
     }
-    ctx.restore();
+
+    score.innerHTML = `
+<h2>Quiz beendet!</h2>
+<p>${points} / ${quiz.length} Punkte</p>
+<h3>${note}</h3>
+`;
+
   }
 
-  function drawParticles(){
-    ctx.save(); ctx.translate(-camX,0);
-    for(const p of particles){
-      ctx.globalAlpha = Math.max(0,p.life/45);
-      ctx.fillStyle = p.coin ? '#facc15' : '#fb7185';
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.coin?4:5,0,Math.PI*2); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    ctx.restore();
-  }
+  loadQuestion();
 
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const grad = ctx.createLinearGradient(0,0,0,H);
-    grad.addColorStop(0,'#020617'); grad.addColorStop(.6,'#111827'); grad.addColorStop(1,'#0f172a');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
-    drawGrid(); drawCoins(); drawTrack(); drawParticles(); drawBike();
-
-    document.getElementById('score').textContent = Math.floor(score);
-    document.getElementById('coins').textContent = coins.filter(c=>c.got).length;
-  }
-
-  function loop(){ update(); draw(); requestAnimationFrame(loop); }
-
-  window.addEventListener('keydown', e=>{
-    if(e.code==='Space'||e.code==='ArrowUp') keys.gas=true;
-    if(e.code==='KeyA'||e.code==='ArrowLeft') keys.left=true;
-    if(e.code==='KeyD'||e.code==='ArrowRight') keys.right=true;
-    if(e.code==='KeyR') restart();
-  });
-  window.addEventListener('keyup', e=>{
-    if(e.code==='Space'||e.code==='ArrowUp') keys.gas=false;
-    if(e.code==='KeyA'||e.code==='ArrowLeft') keys.left=false;
-    if(e.code==='KeyD'||e.code==='ArrowRight') keys.right=false;
-  });
-
-  function bindHold(id, key){
-    const el = document.getElementById(id);
-    const down = e => { e.preventDefault(); keys[key]=true; };
-    const up = e => { e.preventDefault(); keys[key]=false; };
-    el.addEventListener('pointerdown', down);
-    window.addEventListener('pointerup', up);
-    window.addEventListener('pointercancel', up);
-  }
-  bindHold('gasBtn','gas'); bindHold('leftBtn','left'); bindHold('rightBtn','right');
-
-  restart(); loop();
 </script>
+
 </body>
 </html>
