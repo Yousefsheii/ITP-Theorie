@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zuspätkommen-Protokoll – TGM</title>
+  <title>TGM – Zuspätkommen Protokoll</title>
+
   <style>
     :root {
-      --primary: #003b71;
-      --border: #c9c9c9;
-      --text: #1f1f1f;
-      --muted: #666;
-      --background: #f2f4f7;
+      --bg: #1f212b;
+      --panel: #272a36;
+      --card: #313540;
+      --border: #3b404c;
+      --primary: #1d8f5a;
+      --text: #ffffff;
+      --muted: #b8bec9;
+      --danger: #b12f45;
     }
 
     * {
@@ -19,226 +23,155 @@
 
     body {
       margin: 0;
-      padding: 32px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
+      padding: 24px;
+      background: var(--bg);
       color: var(--text);
-      line-height: 1.45;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    .document {
-      max-width: 980px;
-      margin: 0 auto;
-      background: #fff;
-      border: 1px solid #ddd;
-      padding: 38px 42px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    .container {
+      max-width: 1200px;
+      margin: auto;
     }
 
-    .topbar {
+    .header {
       display: flex;
       justify-content: space-between;
-      gap: 24px;
-      align-items: flex-start;
-      border-bottom: 4px solid var(--primary);
-      padding-bottom: 18px;
-      margin-bottom: 28px;
+      align-items: center;
+      margin-bottom: 24px;
     }
 
-    .title h1 {
+    .header h1 {
       margin: 0;
-      font-size: 28px;
-      letter-spacing: 0.2px;
-      color: var(--primary);
-      text-transform: uppercase;
+      font-size: 32px;
     }
 
-    .title p {
-      margin: 6px 0 0;
+    .header p {
+      margin: 4px 0 0;
       color: var(--muted);
       font-size: 14px;
     }
 
-    .school-info {
-      text-align: right;
-      font-size: 13px;
-      color: #333;
-      min-width: 240px;
+    .badge {
+      background: var(--primary);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: bold;
     }
 
-    .school-info strong {
-      font-size: 18px;
-      color: var(--primary);
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 24px;
     }
 
-    .notice {
-      border-left: 5px solid var(--primary);
-      background: #f7f9fc;
-      padding: 12px 15px;
-      margin-bottom: 26px;
-      font-size: 13.5px;
-      color: #333;
-    }
-
-    h2 {
-      margin: 28px 0 14px;
-      font-size: 17px;
-      color: var(--primary);
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 7px;
+    .panel h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 22px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px 22px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
     }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px 18px;
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
     }
 
     .full {
       grid-column: 1 / -1;
     }
 
-    label {
-      display: block;
-      font-weight: 700;
-      font-size: 13px;
-      margin-bottom: 5px;
+    .entries {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
 
-    input,
-    textarea,
-    select {
-      width: 100%;
-      border: 1px solid #999;
-      border-radius: 3px;
-      padding: 9px 10px;
-      font-size: 14px;
-      font-family: inherit;
-      background: #fff;
-    }
-
-    textarea {
-      min-height: 88px;
-      resize: vertical;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 13px;
-    }
-
-    th,
-    td {
+    .entry {
+      background: var(--card);
       border: 1px solid var(--border);
-      padding: 8px;
-      vertical-align: top;
+      border-radius: 14px;
+      padding: 14px;
     }
 
-    th {
-      background: #eef3f8;
-      color: #111;
-      text-align: left;
-      font-weight: 700;
-    }
-
-    td input,
-    td select,
-    td textarea {
-      border: none;
-      padding: 5px;
-      min-height: auto;
-      font-size: 13px;
-    }
-
-    td textarea {
-      height: 42px;
-    }
-
-    .checkbox-area {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px 18px;
-      margin-top: 8px;
+    .entry strong {
+      display: block;
       font-size: 14px;
+      margin-bottom: 8px;
     }
 
-    .checkbox-area label {
-      font-weight: 400;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .checkbox-area input {
-      width: auto;
-    }
-
-    .signature-section {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-top: 48px;
-    }
-
-    .signature {
-      border-top: 1px solid #000;
-      text-align: center;
-      padding-top: 8px;
-      font-size: 13px;
-    }
-
-    .footer {
-      margin-top: 34px;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-      font-size: 12px;
+    .entry small {
       color: var(--muted);
+      display: block;
+      margin-top: 5px;
     }
 
     .actions {
       display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 24px;
+      gap: 12px;
+      margin-top: 22px;
     }
 
     button {
       border: none;
-      border-radius: 3px;
-      padding: 10px 16px;
+      border-radius: 12px;
+      padding: 12px 18px;
       font-size: 14px;
       cursor: pointer;
+      color: white;
       background: var(--primary);
-      color: #fff;
-    }
-
-    button.secondary {
-      background: #555;
     }
 
     button.danger {
-      background: #9f1d20;
+      background: var(--danger);
+    }
+
+    .footer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
     @media print {
       body {
-        padding: 0;
-        background: #fff;
+        background: white;
+        color: black;
       }
 
-      .document {
-        box-shadow: none;
-        border: none;
-        max-width: none;
+      .panel,
+      .entry,
+      input,
+      textarea,
+      select {
+        background: white;
+        color: black;
       }
 
       .actions {
@@ -248,230 +181,136 @@
   </style>
 </head>
 <body>
-<main class="document">
-  <header class="topbar">
-    <div class="title">
-      <h1>Zuspätkommen-Protokoll</h1>
-      <p>Dokumentation von verspätetem Erscheinen im Unterricht</p>
+<div class="container">
+  <div class="header">
+    <div>
+      <h1>Zuspätkommen</h1>
+      <p>TGM – Lehrerprotokoll</p>
     </div>
-    <div class="school-info">
-      <strong>TGM</strong><br />
-      Die Schule der Technik<br />
-      Wexstraße 19–23, 1200 Wien<br />
-      Schulinterne Dokumentation
-    </div>
-  </header>
 
-  <section class="notice">
-    Dieses Formular dient der sachlichen und nachvollziehbaren Dokumentation von Zuspätkommen. Die Eintragung erfolgt durch die zuständige Lehrkraft beziehungsweise den Klassenvorstand.
-  </section>
-
-  <h2>Angaben zur Lehrkraft</h2>
-  <section class="grid">
-    <div>
-      <label for="lehrer_name">Name der Lehrkraft</label>
-      <input id="lehrer_name" type="text" placeholder="Vor- und Nachname" />
-    </div>
-    <div>
-      <label for="lehrer_kuerzel">Lehrerkürzel</label>
-      <input id="lehrer_kuerzel" type="text" placeholder="z. B. MUE" />
-    </div>
-    <div>
-      <label for="fach">Unterrichtsfach</label>
-      <input id="fach" type="text" placeholder="z. B. Mathematik" />
-    </div>
-    <div>
-      <label for="raum">Raum</label>
-      <input id="raum" type="text" placeholder="z. B. C203" />
-    </div>
-  </section>
-
-  <h2>Angaben zur Schülerin / zum Schüler</h2>
-  <section class="grid">
-    <div>
-      <label for="schueler_name">Name</label>
-      <input id="schueler_name" type="text" placeholder="Vor- und Nachname" />
-    </div>
-    <div>
-      <label for="klasse">Klasse</label>
-      <input id="klasse" type="text" placeholder="z. B. 3AHIT" />
-    </div>
-    <div>
-      <label for="katalognummer">Katalognummer</label>
-      <input id="katalognummer" type="text" placeholder="optional" />
-    </div>
-    <div>
-      <label for="klassenvorstand">Klassenvorstand</label>
-      <input id="klassenvorstand" type="text" placeholder="Name des Klassenvorstands" />
-    </div>
-  </section>
-
-  <h2>Einzelprotokoll</h2>
-  <section class="grid-3">
-    <div>
-      <label for="datum">Datum</label>
-      <input id="datum" type="date" />
-    </div>
-    <div>
-      <label for="unterrichtsbeginn">Unterrichtsbeginn</label>
-      <input id="unterrichtsbeginn" type="time" />
-    </div>
-    <div>
-      <label for="ankunftszeit">Tatsächliche Ankunftszeit</label>
-      <input id="ankunftszeit" type="time" />
-    </div>
-    <div>
-      <label for="verspaetung">Verspätung in Minuten</label>
-      <input id="verspaetung" type="number" min="0" placeholder="z. B. 10" />
-    </div>
-    <div>
-      <label for="status">Bewertung</label>
-      <select id="status">
-        <option value="">Bitte auswählen</option>
-        <option>entschuldigt</option>
-        <option>nicht entschuldigt</option>
-        <option>Nachweis ausständig</option>
-        <option>in Klärung</option>
-      </select>
-    </div>
-    <div>
-      <label for="nachweis">Nachweis</label>
-      <select id="nachweis">
-        <option value="">Bitte auswählen</option>
-        <option>vorgelegt</option>
-        <option>nicht vorgelegt</option>
-        <option>nicht erforderlich</option>
-      </select>
-    </div>
-    <div class="full">
-      <label for="grund">Angegebener Grund für das Zuspätkommen</label>
-      <textarea id="grund" placeholder="Sachliche Angabe des genannten Grundes"></textarea>
-    </div>
-    <div class="full">
-      <label for="bemerkung">Bemerkungen / weitere Maßnahmen</label>
-      <textarea id="bemerkung" placeholder="z. B. Gespräch geführt, Klassenvorstand informiert, Erziehungsberechtigte zu informieren"></textarea>
-    </div>
-  </section>
-
-  <h2>Weitere protokollierte Zuspätkommen</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>Datum</th>
-      <th>Fach</th>
-      <th>Lehrkraft</th>
-      <th>Min.</th>
-      <th>Bewertung</th>
-      <th>Bemerkung</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td><input id="p1_datum" type="date" /></td>
-      <td><input id="p1_fach" type="text" /></td>
-      <td><input id="p1_lehrer" type="text" /></td>
-      <td><input id="p1_min" type="number" min="0" /></td>
-      <td><select id="p1_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
-      <td><textarea id="p1_bemerkung"></textarea></td>
-    </tr>
-    <tr>
-      <td><input id="p2_datum" type="date" /></td>
-      <td><input id="p2_fach" type="text" /></td>
-      <td><input id="p2_lehrer" type="text" /></td>
-      <td><input id="p2_min" type="number" min="0" /></td>
-      <td><select id="p2_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
-      <td><textarea id="p2_bemerkung"></textarea></td>
-    </tr>
-    <tr>
-      <td><input id="p3_datum" type="date" /></td>
-      <td><input id="p3_fach" type="text" /></td>
-      <td><input id="p3_lehrer" type="text" /></td>
-      <td><input id="p3_min" type="number" min="0" /></td>
-      <td><select id="p3_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
-      <td><textarea id="p3_bemerkung"></textarea></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <h2>Erforderliche Verständigungen</h2>
-  <section class="checkbox-area">
-    <label><input id="info_kv" type="checkbox" /> Klassenvorstand wurde informiert</label>
-    <label><input id="info_eltern" type="checkbox" /> Erziehungsberechtigte sind zu informieren</label>
-    <label><input id="gespraech" type="checkbox" /> Gespräch mit Schüler/in wurde geführt</label>
-    <label><input id="weitere_massnahmen" type="checkbox" /> Weitere Maßnahmen erforderlich</label>
-  </section>
-
-  <section class="signature-section">
-    <div class="signature">Datum</div>
-    <div class="signature">Unterschrift Lehrkraft</div>
-    <div class="signature">Unterschrift Schüler/in</div>
-  </section>
-
-  <div class="footer">
-    Hinweis: Die Daten werden ausschließlich lokal im Browser dieses Geräts gespeichert. Bei gemeinsam genutzten Geräten sollten gespeicherte Daten nach der Verwendung gelöscht werden.
+    <div class="badge">TGM</div>
   </div>
 
-  <div class="actions">
-    <button onclick="window.print()">Drucken</button>
-    <button class="secondary" onclick="saveNow()">Speichern</button>
-    <button class="danger" onclick="clearForm()">Daten löschen</button>
+  <div class="panel">
+    <h2>Neuer Eintrag</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label for="lehrer">Lehrkraft</label>
+        <input type="text" id="lehrer" placeholder="z. B. Müller" />
+      </div>
+
+      <div class="field">
+        <label for="klasse">Klasse</label>
+        <input type="text" id="klasse" placeholder="z. B. 3AHIT" />
+      </div>
+
+      <div class="field">
+        <label for="datum">Datum</label>
+        <input type="date" id="datum" />
+      </div>
+
+      <div class="field">
+        <label for="stunde">Stunde</label>
+        <input type="number" id="stunde" min="1" max="11" />
+      </div>
+
+      <div class="field">
+        <label for="verspaetung">Verspätung (Minuten)</label>
+        <input type="number" id="verspaetung" min="0" />
+      </div>
+
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status">
+          <option>entschuldigt</option>
+          <option>nicht entschuldigt</option>
+          <option>offen</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="notiz">Notiz</label>
+        <textarea id="notiz" placeholder="Kurze Bemerkung"></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button onclick="saveNow()">Speichern</button>
+      <button onclick="window.print()">Drucken</button>
+      <button class="danger" onclick="clearForm()">Löschen</button>
+    </div>
+
+    <div class="footer">
+      Alle Daten werden lokal im Browser gespeichert.
+    </div>
   </div>
-</main>
+
+  <div class="panel">
+    <h2>Letzte Einträge</h2>
+
+    <div class="entries">
+      <div class="entry">
+        <strong>2. Stunde</strong>
+        Mathematik – 3AHIT
+        <small>10 Minuten verspätet</small>
+      </div>
+
+      <div class="entry">
+        <strong>4. Stunde</strong>
+        Englisch – 2BHIF
+        <small>nicht entschuldigt</small>
+      </div>
+
+      <div class="entry">
+        <strong>1. Stunde</strong>
+        Netzwerktechnik – 4AHIT
+        <small>5 Minuten verspätet</small>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const fields = document.querySelectorAll('input, textarea, select');
 
-  function getKey(field) {
-    return 'tgm_zuspaetkommen_' + field.id;
+  function key(id) {
+    return 'tgm_' + id;
   }
-
-  function saveField(field) {
-    if (!field.id) return;
-    if (field.type === 'checkbox') {
-      localStorage.setItem(getKey(field), field.checked);
-    } else {
-      localStorage.setItem(getKey(field), field.value);
-    }
-  }
-
-  function loadField(field) {
-    if (!field.id) return;
-    const savedValue = localStorage.getItem(getKey(field));
-    if (savedValue === null) return;
-
-    if (field.type === 'checkbox') {
-      field.checked = savedValue === 'true';
-    } else {
-      field.value = savedValue;
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    fields.forEach(loadField);
-  });
-
-  fields.forEach(field => {
-    field.addEventListener('input', () => saveField(field));
-    field.addEventListener('change', () => saveField(field));
-  });
 
   function saveNow() {
-    fields.forEach(saveField);
-    alert('Die Daten wurden lokal gespeichert.');
+    fields.forEach(field => {
+      localStorage.setItem(key(field.id), field.value);
+    });
+
+    alert('Lokal gespeichert');
   }
 
-  function clearForm() {
-    if (!confirm('Alle lokal gespeicherten Daten dieses Protokolls wirklich löschen?')) return;
-
+  function loadData() {
     fields.forEach(field => {
-      if (field.id) localStorage.removeItem(getKey(field));
-      if (field.type === 'checkbox') {
-        field.checked = false;
-      } else {
-        field.value = '';
+      const saved = localStorage.getItem(key(field.id));
+      if (saved !== null) {
+        field.value = saved;
       }
     });
   }
+
+  function clearForm() {
+    if (!confirm('Alle Daten löschen?')) return;
+
+    fields.forEach(field => {
+      localStorage.removeItem(key(field.id));
+      field.value = '';
+    });
+  }
+
+  fields.forEach(field => {
+    field.addEventListener('input', () => {
+      localStorage.setItem(key(field.id), field.value);
+    });
+  });
+
+  window.addEventListener('DOMContentLoaded', loadData);
 </script>
 </body>
 </html>
