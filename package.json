@@ -2,9 +2,10 @@
   "name": "itp-theorie",
   "version": "1.0.0",
   "description": "- Eine Website mit **\"Hello World\"** läuft auf `deinName.vercel.app`\r - Updates passieren **automatisch** durch Pushes auf **GitHub**",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
-    "start": "node server.js"
+    "start": "npx vercel dev",
+    "dev": "npx vercel dev"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,6 @@
   },
   "homepage": "https://github.com/Yousefsheii/ITP-Theorie#readme",
   "dependencies": {
-    "express": "^5.2.1",
-    "sqlite3": "^6.0.1"
+    "@supabase/supabase-js": "^2.106.0"
   }
 }

@@ -78,13 +78,16 @@ async function addEntry(payload) {
 
   if (!response.ok) {
     const data = await response.json().catch(() => ({}));
-    throw new Error(data.error || "Speichern fehlgeschlagen.");
+    throw new Error(data.error || "Speichern fehlgeschlagen. API nicht erreichbar.");
   }
 }
 
 async function deleteEntry(id) {
-  const response = await fetch(`/api/entries/${id}`, { method: "DELETE" });
-  if (!response.ok) throw new Error("Loeschen fehlgeschlagen.");
+  const response = await fetch(`/api/entries?id=${id}`, { method: "DELETE" });
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || "Loeschen fehlgeschlagen.");
+  }
 }
 
 form.addEventListener("submit", async (event) => {
