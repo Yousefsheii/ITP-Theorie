@@ -3,314 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TGM – Zuspätkommen Protokoll</title>
-
-  <style>
-    :root {
-      --bg: #1f212b;
-      --panel: #272a36;
-      --card: #313540;
-      --border: #3b404c;
-      --primary: #1d8f5a;
-      --text: #ffffff;
-      --muted: #b8bec9;
-      --danger: #b12f45;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 24px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-
-    .header p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .badge {
-      background: var(--primary);
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .panel h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 22px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: white;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .entries {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .entry {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .entry strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .entry small {
-      color: var(--muted);
-      display: block;
-      margin-top: 5px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 22px;
-    }
-
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 14px;
-      cursor: pointer;
-      color: white;
-      background: var(--primary);
-    }
-
-    button.danger {
-      background: var(--danger);
-    }
-
-    .footer {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    @media print {
-      body {
-        background: white;
-        color: black;
-      }
-
-      .panel,
-      .entry,
-      input,
-      textarea,
-      select {
-        background: white;
-        color: black;
-      }
-
-      .actions {
-        display: none;
-      }
-    }
-  </style>
+  <title>TGM - Zuspaetkommen Protokoll</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div>
-      <h1>Zuspätkommen</h1>
-      <p>TGM – Lehrerprotokoll</p>
-    </div>
-
-    <div class="badge">TGM</div>
-  </div>
-
-  <div class="panel">
-    <h2>Neuer Eintrag</h2>
-
-    <div class="grid">
-      <div class="field">
-        <label for="lehrer">Lehrkraft</label>
-        <input type="text" id="lehrer" placeholder="z. B. Müller" />
+  <main class="container">
+    <header class="header">
+      <div>
+        <h1>Zuspätkommen Protokoll</h1>
+        <p>Gemeinsame Einträge mit Datenbank-Speicherung</p>
       </div>
+      <div class="badge">TGM</div>
+    </header>
 
-      <div class="field">
-        <label for="klasse">Klasse</label>
-        <input type="text" id="klasse" placeholder="z. B. 3AHIT" />
+    <section class="panel">
+      <h2>Neuer Eintrag</h2>
+      <form id="entryForm" class="grid">
+        <label class="field">
+          <span>Eingetragen von</span>
+          <input id="createdBy" type="text" placeholder="z. B. Max Mustermann" required />
+        </label>
+        <label class="field">
+          <span>Lehrkraft</span>
+          <input id="teacher" type="text" placeholder="z. B. Müller" required />
+        </label>
+        <label class="field">
+          <span>Klasse</span>
+          <input id="className" type="text" placeholder="z. B. 3AHIT" required />
+        </label>
+        <label class="field">
+          <span>Datum</span>
+          <input id="date" type="date" required />
+        </label>
+        <label class="field">
+          <span>Stunde</span>
+          <input id="lesson" type="number" min="1" max="11" required />
+        </label>
+        <label class="field">
+          <span>Verspaetung (Minuten)</span>
+          <input id="delayMinutes" type="number" min="0" required />
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <select id="status" required>
+            <option value="entschuldigt">entschuldigt</option>
+            <option value="nicht entschuldigt">nicht entschuldigt</option>
+            <option value="offen">offen</option>
+          </select>
+        </label>
+        <label class="field full">
+          <span>Notiz</span>
+          <textarea id="note" placeholder="Kurze Bemerkung"></textarea>
+        </label>
+        <div class="actions full">
+          <button type="submit">Eintrag speichern</button>
+          <button id="clearBtn" type="button" class="secondary">Formular leeren</button>
+        </div>
+      </form>
+      <p id="message" class="message"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panelHeader">
+        <h2>Letzte Einträge</h2>
+        <button id="reloadBtn" type="button" class="secondary">Aktualisieren</button>
       </div>
+      <div id="entries" class="entries"></div>
+    </section>
+  </main>
 
-      <div class="field">
-        <label for="datum">Datum</label>
-        <input type="date" id="datum" />
-      </div>
-
-      <div class="field">
-        <label for="stunde">Stunde</label>
-        <input type="number" id="stunde" min="1" max="11" />
-      </div>
-
-      <div class="field">
-        <label for="verspaetung">Verspätung (Minuten)</label>
-        <input type="number" id="verspaetung" min="0" />
-      </div>
-
-      <div class="field">
-        <label for="status">Status</label>
-        <select id="status">
-          <option>entschuldigt</option>
-          <option>nicht entschuldigt</option>
-          <option>offen</option>
-        </select>
-      </div>
-
-      <div class="field full">
-        <label for="notiz">Notiz</label>
-        <textarea id="notiz" placeholder="Kurze Bemerkung"></textarea>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button onclick="saveNow()">Speichern</button>
-      <button onclick="window.print()">Drucken</button>
-      <button class="danger" onclick="clearForm()">Löschen</button>
-    </div>
-
-    <div class="footer">
-      Alle Daten werden lokal im Browser gespeichert.
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>Letzte Einträge</h2>
-
-    <div class="entries">
-      <div class="entry">
-        <strong>2. Stunde</strong>
-        Mathematik – 3AHIT
-        <small>10 Minuten verspätet</small>
-      </div>
-
-      <div class="entry">
-        <strong>4. Stunde</strong>
-        Englisch – 2BHIF
-        <small>nicht entschuldigt</small>
-      </div>
-
-      <div class="entry">
-        <strong>1. Stunde</strong>
-        Netzwerktechnik – 4AHIT
-        <small>5 Minuten verspätet</small>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  const fields = document.querySelectorAll('input, textarea, select');
-
-  function key(id) {
-    return 'tgm_' + id;
-  }
-
-  function saveNow() {
-    fields.forEach(field => {
-      localStorage.setItem(key(field.id), field.value);
-    });
-
-    alert('Lokal gespeichert');
-  }
-
-  function loadData() {
-    fields.forEach(field => {
-      const saved = localStorage.getItem(key(field.id));
-      if (saved !== null) {
-        field.value = saved;
-      }
-    });
-  }
-
-  function clearForm() {
-    if (!confirm('Alle Daten löschen?')) return;
-
-    fields.forEach(field => {
-      localStorage.removeItem(key(field.id));
-      field.value = '';
-    });
-  }
-
-  fields.forEach(field => {
-    field.addEventListener('input', () => {
-      localStorage.setItem(key(field.id), field.value);
-    });
-  });
-
-  window.addEventListener('DOMContentLoaded', loadData);
-</script>
+  <script src="script.js"></script>
 </body>
 </html>

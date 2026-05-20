@@ -1,0 +1,25 @@
+{
+  "name": "itp-theorie",
+  "version": "1.0.0",
+  "description": "- Eine Website mit **\"Hello World\"** läuft auf `deinName.vercel.app`\r - Updates passieren **automatisch** durch Pushes auf **GitHub**",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yousefsheii/ITP-Theorie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yousefsheii/ITP-Theorie/issues"
+  },
+  "homepage": "https://github.com/Yousefsheii/ITP-Theorie#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  }
+}

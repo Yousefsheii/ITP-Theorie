@@ -1,36 +1,25 @@
-# Hello World (GitHub → Vercel)
+# Zuspaetkommen Protokoll mit Datenbank
 
-## Ziel
-- Eine Website mit **"Hello World"** läuft auf `deinName.vercel.app`
-- Updates passieren **automatisch** durch Pushes auf **GitHub**
+Web-App fuer gemeinsames Eintragen von Zuspaetkommen.  
+Eintraege werden zentral in einer SQLite-Datenbank gespeichert, damit mehrere Personen dieselben Daten sehen.
 
-## Lokal testen
-Du kannst die `index.html` einfach im Browser öffnen.
+## Funktionen
+- modernes, responsives UI
+- neue Eintraege speichern
+- letzte Eintraege fuer alle anzeigen
+- Eintraege loeschen
+- Speicherung in `data.db` (SQLite)
 
-## Git initialisieren & erster Commit
-Im Projektordner:
-
+## Starten
 ```bash
-git init
-git add .
-git commit -m "Initial hello world"
+npm install
+npm start
 ```
 
-## GitHub Repo erstellen & pushen
-1. Auf GitHub ein neues Repository erstellen (z.B. `hello-vercel`)
-2. Dann im Projektordner:
+Danach im Browser oeffnen: `http://localhost:3000`
 
-```bash
-git branch -M main
-git remote add origin <DEIN_GITHUB_REPO_URL>
-git push -u origin main
-```
-
-## Vercel Deploy (Auto-Deploy)
-1. Auf Vercel einloggen
-2. **Add New → Project**
-3. Dein GitHub Repo auswählen
-4. Framework: **Other** (oder einfach Default lassen)
-5. Deploy klicken
-
-Ab jetzt: jedes `git push` triggert automatisch ein neues Deployment.
+## Wichtige Dateien
+- `server.js` - API + Datenbank + statische Auslieferung
+- `index.html` - Oberflaeche
+- `styles.css` - Design
+- `script.js` - Frontend-Logik und API-Aufrufe

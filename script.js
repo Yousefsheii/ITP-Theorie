@@ -1,77 +1,134 @@
-const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const form = document.getElementById("entryForm");
+const entriesEl = document.getElementById("entries");
+const messageEl = document.getElementById("message");
+const reloadBtn = document.getElementById("reloadBtn");
+const clearBtn = document.getElementById("clearBtn");
 
-function setTheme(mode) {
-  if (mode === "dark") {
-    document.documentElement.dataset.theme = "dark";
-  } else {
-    delete document.documentElement.dataset.theme;
+const fields = {
+  createdBy: document.getElementById("createdBy"),
+  teacher: document.getElementById("teacher"),
+  className: document.getElementById("className"),
+  date: document.getElementById("date"),
+  lesson: document.getElementById("lesson"),
+  delayMinutes: document.getElementById("delayMinutes"),
+  status: document.getElementById("status"),
+  note: document.getElementById("note"),
+};
+
+function setMessage(text, isError = false) {
+  messageEl.textContent = text;
+  messageEl.style.color = isError ? "#fca5a5" : "#94a3b8";
+}
+
+function resetForm() {
+  form.reset();
+  fields.date.valueAsDate = new Date();
+}
+
+function formatDate(isoDate) {
+  const d = new Date(isoDate);
+  if (Number.isNaN(d.getTime())) return isoDate;
+  return d.toLocaleDateString("de-AT");
+}
+
+function renderEntries(entries) {
+  if (!entries.length) {
+    entriesEl.innerHTML = "<p class='message'>Noch keine Eintraege vorhanden.</p>";
+    return;
   }
 
-  try {
-    localStorage.setItem("ys_theme", mode);
-  } catch (_) {}
+  entriesEl.innerHTML = entries
+    .map(
+      (entry) => `
+      <article class="entryCard">
+        <div class="entryHead">
+          <h3 class="entryTitle">${entry.lesson}. Stunde - ${entry.class_name}</h3>
+          <button class="danger" data-id="${entry.id}" type="button">Loeschen</button>
+        </div>
+        <p class="entryMeta">${entry.teacher} | ${entry.delay_minutes} Minuten | ${entry.status}</p>
+        <p class="entryMeta">Datum: ${formatDate(entry.date)}</p>
+        <p class="entryNote">${entry.note || "Keine Notiz"}</p>
+        <div class="entryFoot">
+          <span>Von: ${entry.created_by}</span>
+          <span>${new Date(entry.created_at).toLocaleString("de-AT")}</span>
+        </div>
+      </article>
+    `
+    )
+    .join("");
 }
 
-function getTheme() {
+async function loadEntries() {
   try {
-    return localStorage.getItem("ys_theme") || "light";
-  } catch (_) {
-    return "light";
+    const response = await fetch("/api/entries");
+    if (!response.ok) throw new Error("Eintraege konnten nicht geladen werden.");
+    const data = await response.json();
+    renderEntries(data);
+  } catch (error) {
+    setMessage(error.message, true);
   }
 }
 
-function initThemeToggle() {
-  const btn = $("#themeToggle");
-
-  if (!btn) return;
-
-  btn.addEventListener("click", () => {
-    const current = getTheme();
-    const next = current === "dark" ? "light" : "dark";
-
-    setTheme(next);
+async function addEntry(payload) {
+  const response = await fetch("/api/entries", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || "Speichern fehlgeschlagen.");
+  }
 }
 
-function initReveal() {
-  const els = $$(".reveal");
-
-  const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("isVisible");
-          }
-        });
-      },
-      {
-        threshold: 0.15,
-      }
-  );
-
-  els.forEach((el) => io.observe(el));
+async function deleteEntry(id) {
+  const response = await fetch(`/api/entries/${id}`, { method: "DELETE" });
+  if (!response.ok) throw new Error("Loeschen fehlgeschlagen.");
 }
 
-function initSmoothScroll() {
-  document.addEventListener("click", (e) => {
-    const a = e.target.closest('a[href^="#"]');
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    if (!a) return;
+  const payload = {
+    created_by: fields.createdBy.value.trim(),
+    teacher: fields.teacher.value.trim(),
+    class_name: fields.className.value.trim(),
+    date: fields.date.value,
+    lesson: Number(fields.lesson.value),
+    delay_minutes: Number(fields.delayMinutes.value),
+    status: fields.status.value,
+    note: fields.note.value.trim(),
+  };
 
-    const target = document.querySelector(a.getAttribute("href"));
+  try {
+    await addEntry(payload);
+    setMessage("Eintrag wurde in der Datenbank gespeichert.");
+    resetForm();
+    await loadEntries();
+  } catch (error) {
+    setMessage(error.message, true);
+  }
+});
 
-    if (!target) return;
+entriesEl.addEventListener("click", async (event) => {
+  const button = event.target.closest("button[data-id]");
+  if (!button) return;
 
-    e.preventDefault();
+  const id = Number(button.dataset.id);
+  if (!window.confirm("Diesen Eintrag wirklich loeschen?")) return;
 
-    target.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
-}
+  try {
+    await deleteEntry(id);
+    setMessage("Eintrag geloescht.");
+    await loadEntries();
+  } catch (error) {
+    setMessage(error.message, true);
+  }
+});
 
-initThemeToggle();
-initReveal();
-initSmoothScroll();
+reloadBtn.addEventListener("click", loadEntries);
+clearBtn.addEventListener("click", resetForm);
+
+fields.date.valueAsDate = new Date();
+loadEntries();
