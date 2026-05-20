@@ -1,574 +1,477 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEDT Prüfung Quiz</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zuspätkommen-Protokoll – TGM</title>
   <style>
-
-    body{
-      margin:0;
-      background:#020617;
-      color:white;
-      font-family:Arial, Helvetica, sans-serif;
-      padding:20px;
+    :root {
+      --primary: #003b71;
+      --border: #c9c9c9;
+      --text: #1f1f1f;
+      --muted: #666;
+      --background: #f2f4f7;
     }
 
-    .container{
-      max-width:1000px;
-      margin:auto;
+    * {
+      box-sizing: border-box;
     }
 
-    h1{
-      text-align:center;
-      color:#38bdf8;
-      margin-bottom:25px;
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.45;
     }
 
-    .quiz-box{
-      background:#111827;
-      border-radius:22px;
-      padding:30px;
-      box-shadow:0 0 30px rgba(0,0,0,.4);
+    .document {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 38px 42px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
     }
 
-    .question{
-      font-size:24px;
-      line-height:1.5;
-      margin-bottom:20px;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      border-bottom: 4px solid var(--primary);
+      padding-bottom: 18px;
+      margin-bottom: 28px;
     }
 
-    button{
-      width:100%;
-      padding:16px;
-      margin:10px 0;
-      border:none;
-      border-radius:14px;
-      background:#1e293b;
-      color:white;
-      cursor:pointer;
-      font-size:17px;
-      transition:.2s;
+    .title h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.2px;
+      color: var(--primary);
+      text-transform: uppercase;
     }
 
-    button:hover{
-      background:#334155;
+    .title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .correct{
-      background:#16a34a !important;
+    .school-info {
+      text-align: right;
+      font-size: 13px;
+      color: #333;
+      min-width: 240px;
     }
 
-    .wrong{
-      background:#dc2626 !important;
+    .school-info strong {
+      font-size: 18px;
+      color: var(--primary);
     }
 
-    #nextBtn{
-      margin-top:20px;
-      background:#0ea5e9;
-      font-weight:bold;
+    .notice {
+      border-left: 5px solid var(--primary);
+      background: #f7f9fc;
+      padding: 12px 15px;
+      margin-bottom: 26px;
+      font-size: 13.5px;
+      color: #333;
     }
 
-    .code{
-      background:#0f172a;
-      border-radius:14px;
-      padding:16px;
-      margin-bottom:20px;
-      overflow:auto;
-      color:#38bdf8;
-      font-family:monospace;
+    h2 {
+      margin: 28px 0 14px;
+      font-size: 17px;
+      color: var(--primary);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 7px;
     }
 
-    #score{
-      text-align:center;
-      font-size:30px;
-      margin-top:30px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 22px;
     }
 
-    .result{
-      background:#111827;
-      padding:30px;
-      border-radius:20px;
-      text-align:center;
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px 18px;
     }
 
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #999;
+      border-radius: 3px;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border);
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f8;
+      color: #111;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    td input,
+    td select,
+    td textarea {
+      border: none;
+      padding: 5px;
+      min-height: auto;
+      font-size: 13px;
+    }
+
+    td textarea {
+      height: 42px;
+    }
+
+    .checkbox-area {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 18px;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .checkbox-area label {
+      font-weight: 400;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .checkbox-area input {
+      width: auto;
+    }
+
+    .signature-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .signature {
+      border-top: 1px solid #000;
+      text-align: center;
+      padding-top: 8px;
+      font-size: 13px;
+    }
+
+    .footer {
+      margin-top: 34px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    button {
+      border: none;
+      border-radius: 3px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    button.secondary {
+      background: #555;
+    }
+
+    button.danger {
+      background: #9f1d20;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #fff;
+      }
+
+      .document {
+        box-shadow: none;
+        border: none;
+        max-width: none;
+      }
+
+      .actions {
+        display: none;
+      }
+    }
   </style>
 </head>
-
 <body>
+<main class="document">
+  <header class="topbar">
+    <div class="title">
+      <h1>Zuspätkommen-Protokoll</h1>
+      <p>Dokumentation von verspätetem Erscheinen im Unterricht</p>
+    </div>
+    <div class="school-info">
+      <strong>TGM</strong><br />
+      Die Schule der Technik<br />
+      Wexstraße 19–23, 1200 Wien<br />
+      Schulinterne Dokumentation
+    </div>
+  </header>
 
-<div class="container">
+  <section class="notice">
+    Dieses Formular dient der sachlichen und nachvollziehbaren Dokumentation von Zuspätkommen. Die Eintragung erfolgt durch die zuständige Lehrkraft beziehungsweise den Klassenvorstand.
+  </section>
 
-  <h1>MEDT VueJS / Prototyping / Figma Quiz</h1>
+  <h2>Angaben zur Lehrkraft</h2>
+  <section class="grid">
+    <div>
+      <label for="lehrer_name">Name der Lehrkraft</label>
+      <input id="lehrer_name" type="text" placeholder="Vor- und Nachname" />
+    </div>
+    <div>
+      <label for="lehrer_kuerzel">Lehrerkürzel</label>
+      <input id="lehrer_kuerzel" type="text" placeholder="z. B. MUE" />
+    </div>
+    <div>
+      <label for="fach">Unterrichtsfach</label>
+      <input id="fach" type="text" placeholder="z. B. Mathematik" />
+    </div>
+    <div>
+      <label for="raum">Raum</label>
+      <input id="raum" type="text" placeholder="z. B. C203" />
+    </div>
+  </section>
 
-  <div class="quiz-box">
+  <h2>Angaben zur Schülerin / zum Schüler</h2>
+  <section class="grid">
+    <div>
+      <label for="schueler_name">Name</label>
+      <input id="schueler_name" type="text" placeholder="Vor- und Nachname" />
+    </div>
+    <div>
+      <label for="klasse">Klasse</label>
+      <input id="klasse" type="text" placeholder="z. B. 3AHIT" />
+    </div>
+    <div>
+      <label for="katalognummer">Katalognummer</label>
+      <input id="katalognummer" type="text" placeholder="optional" />
+    </div>
+    <div>
+      <label for="klassenvorstand">Klassenvorstand</label>
+      <input id="klassenvorstand" type="text" placeholder="Name des Klassenvorstands" />
+    </div>
+  </section>
 
-    <div id="question" class="question"></div>
+  <h2>Einzelprotokoll</h2>
+  <section class="grid-3">
+    <div>
+      <label for="datum">Datum</label>
+      <input id="datum" type="date" />
+    </div>
+    <div>
+      <label for="unterrichtsbeginn">Unterrichtsbeginn</label>
+      <input id="unterrichtsbeginn" type="time" />
+    </div>
+    <div>
+      <label for="ankunftszeit">Tatsächliche Ankunftszeit</label>
+      <input id="ankunftszeit" type="time" />
+    </div>
+    <div>
+      <label for="verspaetung">Verspätung in Minuten</label>
+      <input id="verspaetung" type="number" min="0" placeholder="z. B. 10" />
+    </div>
+    <div>
+      <label for="status">Bewertung</label>
+      <select id="status">
+        <option value="">Bitte auswählen</option>
+        <option>entschuldigt</option>
+        <option>nicht entschuldigt</option>
+        <option>Nachweis ausständig</option>
+        <option>in Klärung</option>
+      </select>
+    </div>
+    <div>
+      <label for="nachweis">Nachweis</label>
+      <select id="nachweis">
+        <option value="">Bitte auswählen</option>
+        <option>vorgelegt</option>
+        <option>nicht vorgelegt</option>
+        <option>nicht erforderlich</option>
+      </select>
+    </div>
+    <div class="full">
+      <label for="grund">Angegebener Grund für das Zuspätkommen</label>
+      <textarea id="grund" placeholder="Sachliche Angabe des genannten Grundes"></textarea>
+    </div>
+    <div class="full">
+      <label for="bemerkung">Bemerkungen / weitere Maßnahmen</label>
+      <textarea id="bemerkung" placeholder="z. B. Gespräch geführt, Klassenvorstand informiert, Erziehungsberechtigte zu informieren"></textarea>
+    </div>
+  </section>
 
-    <div id="code"></div>
+  <h2>Weitere protokollierte Zuspätkommen</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Fach</th>
+      <th>Lehrkraft</th>
+      <th>Min.</th>
+      <th>Bewertung</th>
+      <th>Bemerkung</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><input id="p1_datum" type="date" /></td>
+      <td><input id="p1_fach" type="text" /></td>
+      <td><input id="p1_lehrer" type="text" /></td>
+      <td><input id="p1_min" type="number" min="0" /></td>
+      <td><select id="p1_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
+      <td><textarea id="p1_bemerkung"></textarea></td>
+    </tr>
+    <tr>
+      <td><input id="p2_datum" type="date" /></td>
+      <td><input id="p2_fach" type="text" /></td>
+      <td><input id="p2_lehrer" type="text" /></td>
+      <td><input id="p2_min" type="number" min="0" /></td>
+      <td><select id="p2_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
+      <td><textarea id="p2_bemerkung"></textarea></td>
+    </tr>
+    <tr>
+      <td><input id="p3_datum" type="date" /></td>
+      <td><input id="p3_fach" type="text" /></td>
+      <td><input id="p3_lehrer" type="text" /></td>
+      <td><input id="p3_min" type="number" min="0" /></td>
+      <td><select id="p3_status"><option></option><option>entschuldigt</option><option>nicht entschuldigt</option><option>in Klärung</option></select></td>
+      <td><textarea id="p3_bemerkung"></textarea></td>
+    </tr>
+    </tbody>
+  </table>
 
-    <div id="answers"></div>
+  <h2>Erforderliche Verständigungen</h2>
+  <section class="checkbox-area">
+    <label><input id="info_kv" type="checkbox" /> Klassenvorstand wurde informiert</label>
+    <label><input id="info_eltern" type="checkbox" /> Erziehungsberechtigte sind zu informieren</label>
+    <label><input id="gespraech" type="checkbox" /> Gespräch mit Schüler/in wurde geführt</label>
+    <label><input id="weitere_massnahmen" type="checkbox" /> Weitere Maßnahmen erforderlich</label>
+  </section>
 
-    <button id="nextBtn">Nächste Frage</button>
+  <section class="signature-section">
+    <div class="signature">Datum</div>
+    <div class="signature">Unterschrift Lehrkraft</div>
+    <div class="signature">Unterschrift Schüler/in</div>
+  </section>
 
+  <div class="footer">
+    Hinweis: Die Daten werden ausschließlich lokal im Browser dieses Geräts gespeichert. Bei gemeinsam genutzten Geräten sollten gespeicherte Daten nach der Verwendung gelöscht werden.
   </div>
 
-  <div id="score"></div>
-
-</div>
+  <div class="actions">
+    <button onclick="window.print()">Drucken</button>
+    <button class="secondary" onclick="saveNow()">Speichern</button>
+    <button class="danger" onclick="clearForm()">Daten löschen</button>
+  </div>
+</main>
 
 <script>
+  const fields = document.querySelectorAll('input, textarea, select');
 
-  const quiz = [
-
-    {
-      q:"Warum muss data() in Vue als Funktion definiert werden?",
-      a:[
-        "Weil jede Komponente eigene reaktive Daten benötigt",
-        "Weil props sonst nicht funktionieren",
-        "Weil Vue keine Objekte erlaubt",
-        "Weil computed deaktiviert wird"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu props ist korrekt?",
-      a:[
-        "Sie dienen zur Datenübergabe zwischen Komponenten",
-        "Sie speichern automatisch LocalStorage",
-        "Sie ersetzen methods",
-        "Sie funktionieren nur mit Zahlen"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was macht computed in VueJS?",
-      a:[
-        "Berechnet Werte abhängig von Daten",
-        "Erstellt automatisch Komponenten",
-        "Löscht Arrays",
-        "Speichert Daten im Browser"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu computed stimmt?",
-      a:[
-        "Computed Properties werden gecacht",
-        "Computed wird nur einmal ausgeführt",
-        "Computed ersetzt v-for",
-        "Computed kann keine Arrays verwenden"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Warum wird toLowerCase() oft bei Suchfunktionen verwendet?",
-      a:[
-        "Damit Groß-/Kleinschreibung ignoriert wird",
-        "Weil includes sonst abstürzt",
-        "Für bessere Performance",
-        "Weil filter es verlangt"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was macht filter()?",
-      a:[
-        "Es erzeugt ein neues gefiltertes Array",
-        "Es löscht automatisch Elemente",
-        "Es verändert das Originalarray direkt",
-        "Es funktioniert nur mit Strings"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was passiert hier?",
-      code:`<button v-on:click="$emit('remove', id)">`,
-      a:[
-        "Ein Event wird mit Parameter ausgelöst",
-        "Die Seite wird neu geladen",
-        "Ein CSS Effekt startet",
-        "Eine Komponente wird importiert"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aufgabe hat v-bind:key?",
-      a:[
-        "Elemente eindeutig identifizieren",
-        "Events speichern",
-        "CSS aktivieren",
-        "Arrays sortieren"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu LocalStorage stimmt?",
-      a:[
-        "Daten bleiben auch nach Browser-Neustart erhalten",
-        "Es speichert nur Zahlen",
-        "Es funktioniert nur online",
-        "Es löscht Daten automatisch"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Warum verwendet man JSON.stringify()?",
-      a:[
-        "Weil LocalStorage nur Strings speichert",
-        "Um Arrays schneller zu machen",
-        "Für CSS",
-        "Für computed"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was macht JSON.parse()?",
-      a:[
-        "Es wandelt JSON Strings zurück in Objekte",
-        "Es löscht LocalStorage",
-        "Es erzeugt HTML",
-        "Es speichert Arrays"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was beschreibt einen Sketch am besten?",
-      a:[
-        "Eine grobe schnelle Ideenskizze",
-        "Einen fertigen klickbaren Prototyp",
-        "Ein Datenmodell",
-        "Eine Datenbankstruktur"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu Wireframes stimmt?",
-      a:[
-        "Sie zeigen Struktur ohne echte Funktionalität",
-        "Sie enthalten immer echte Daten",
-        "Sie sind vollständig programmiert",
-        "Sie ersetzen Mockups"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist typisch für Mockups?",
-      a:[
-        "Sie wirken sehr realistisch",
-        "Sie enthalten keine Designs",
-        "Sie bestehen nur aus Text",
-        "Sie haben nie Farben"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was beschreibt einen Prototypen?",
-      a:[
-        "Ein vereinfachtes System mit Verhalten",
-        "Nur HTML ohne Funktion",
-        "Eine Datenbank",
-        "Nur CSS"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist horizontales Prototyping?",
-      a:[
-        "Viele Funktionen oberflächlich simulieren",
-        "Wenige Funktionen vollständig entwickeln",
-        "Nur Backend entwickeln",
-        "Keine Benutzeroberfläche verwenden"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist vertikales Prototyping?",
-      a:[
-        "Wenige Funktionen detailliert umsetzen",
-        "Alle Funktionen grob darstellen",
-        "Nur Wireframes verwenden",
-        "Nur Navigation zeigen"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was bedeutet Low Fidelity?",
-      a:[
-        "Einfacher schneller Prototyp",
-        "Vollständig realistisches Produkt",
-        "Echte Datenbank",
-        "Finale fertige App"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was bedeutet High Fidelity?",
-      a:[
-        "Sehr realistischer detaillierter Prototyp",
-        "Grobe Papierzeichnung",
-        "Nur ein Konzept",
-        "Nur Navigation"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Warum spart Prototyping Kosten?",
-      a:[
-        "Weil Fehler früher entdeckt werden",
-        "Weil keine Entwickler benötigt werden",
-        "Weil Tests unnötig werden",
-        "Weil keine Designs notwendig sind"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu Figma stimmt?",
-      a:[
-        "Figma wird häufig für UI/UX Design und Prototyping verwendet",
-        "Figma ist eine Datenbank",
-        "Figma ersetzt JavaScript",
-        "Figma funktioniert nur offline"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Wofür verwendet man Figma-Prototyping?",
-      a:[
-        "Zum Simulieren von Benutzerinteraktionen",
-        "Zum Programmieren von Datenbanken",
-        "Zum Hosten von Webseiten",
-        "Zum Ausführen von VueJS"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was kann man in Figma verbinden?",
-      a:[
-        "Frames und Screens",
-        "Nur CSS Dateien",
-        "Nur Bilder",
-        "Nur Datenbanken"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage über Usability stimmt?",
-      a:[
-        "Usability verbessert Benutzerfreundlichkeit",
-        "Usability betrifft nur Farben",
-        "Usability ist nur für Apps wichtig",
-        "Usability ersetzt Testing"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist ein Vorteil von High Fidelity Prototypen?",
-      a:[
-        "Realistischere Tests sind möglich",
-        "Sie benötigen kein Design",
-        "Sie enthalten keine Interaktion",
-        "Sie sind schneller als Skizzen"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was ist typisch für Low Fidelity Prototypen?",
-      a:[
-        "Schnell und günstig",
-        "Sehr detailliert",
-        "Immer vollständig interaktiv",
-        "Fertig programmiert"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Was passiert bei diesem Code?",
-      code:`localStorage.setItem("user", JSON.stringify(user));`,
-      a:[
-        "Ein Objekt wird als String gespeichert",
-        "Ein Objekt wird gelöscht",
-        "Eine Komponente wird erstellt",
-        "Ein Event wird ausgelöst"
-      ],
-      correct:0
-    },
-
-    {
-      q:"Welche Aussage zu Vue-Komponenten stimmt?",
-      a:[
-        "Sie kapseln HTML, CSS und JavaScript",
-        "Sie bestehen nur aus HTML",
-        "Sie ersetzen CSS",
-        "Sie können keine Events auslösen"
-      ],
-      correct:0
-    }
-
-  ];
-
-  let current = 0;
-  let points = 0;
-
-  const question = document.getElementById("question");
-  const answers = document.getElementById("answers");
-  const nextBtn = document.getElementById("nextBtn");
-  const score = document.getElementById("score");
-  const code = document.getElementById("code");
-
-  function shuffle(array){
-
-    for(let i = array.length - 1; i > 0; i--){
-
-      const j = Math.floor(Math.random() * (i + 1));
-
-      [array[i], array[j]] = [array[j], array[i]];
-
-    }
-
-    return array;
-
+  function getKey(field) {
+    return 'tgm_zuspaetkommen_' + field.id;
   }
 
-  function loadQuestion(){
-
-    const q = quiz[current];
-
-    question.textContent = (current+1)+". "+q.q;
-
-    answers.innerHTML = "";
-
-    if(q.code){
-      code.innerHTML = `<div class="code">${q.code}</div>`;
-    }else{
-      code.innerHTML = "";
+  function saveField(field) {
+    if (!field.id) return;
+    if (field.type === 'checkbox') {
+      localStorage.setItem(getKey(field), field.checked);
+    } else {
+      localStorage.setItem(getKey(field), field.value);
     }
+  }
 
-    let shuffled = q.a.map((text,index)=>({
-      text,
-      correct:index === q.correct
-    }));
+  function loadField(field) {
+    if (!field.id) return;
+    const savedValue = localStorage.getItem(getKey(field));
+    if (savedValue === null) return;
 
-    shuffle(shuffled);
+    if (field.type === 'checkbox') {
+      field.checked = savedValue === 'true';
+    } else {
+      field.value = savedValue;
+    }
+  }
 
-    shuffled.forEach(answer=>{
+  window.addEventListener('DOMContentLoaded', () => {
+    fields.forEach(loadField);
+  });
 
-      const btn = document.createElement("button");
+  fields.forEach(field => {
+    field.addEventListener('input', () => saveField(field));
+    field.addEventListener('change', () => saveField(field));
+  });
 
-      btn.textContent = answer.text;
+  function saveNow() {
+    fields.forEach(saveField);
+    alert('Die Daten wurden lokal gespeichert.');
+  }
 
-      btn.onclick = ()=>checkAnswer(btn,answer.correct);
+  function clearForm() {
+    if (!confirm('Alle lokal gespeicherten Daten dieses Protokolls wirklich löschen?')) return;
 
-      answers.appendChild(btn);
-
+    fields.forEach(field => {
+      if (field.id) localStorage.removeItem(getKey(field));
+      if (field.type === 'checkbox') {
+        field.checked = false;
+      } else {
+        field.value = '';
+      }
     });
-
   }
-
-  function checkAnswer(btn,isCorrect){
-
-    const buttons = answers.querySelectorAll("button");
-
-    buttons.forEach(b=>b.disabled=true);
-
-    if(isCorrect){
-
-      btn.classList.add("correct");
-
-      points++;
-
-    }else{
-
-      btn.classList.add("wrong");
-
-      buttons.forEach(b=>{
-
-        const q = quiz[current];
-
-        if(b.textContent === q.a[q.correct]){
-
-          b.classList.add("correct");
-
-        }
-
-      });
-
-    }
-
-  }
-
-  nextBtn.onclick = ()=>{
-
-    current++;
-
-    if(current < quiz.length){
-
-      loadQuestion();
-
-    }else{
-
-      finishQuiz();
-
-    }
-
-  };
-
-  function finishQuiz(){
-
-    document.querySelector(".quiz-box").style.display = "none";
-
-    let text = "";
-
-    if(points >= 24){
-      text = "Sehr gut";
-    }else if(points >= 18){
-      text = "Gut";
-    }else if(points >= 12){
-      text = "Befriedigend";
-    }else{
-      text = "Mehr lernen";
-    }
-
-    score.innerHTML = `
-<div class="result">
-<h2>Quiz beendet</h2>
-<p>${points} / ${quiz.length} Punkte</p>
-<h3>${text}</h3>
-</div>
-`;
-
-  }
-
-  loadQuestion();
-
 </script>
-
 </body>
 </html>
