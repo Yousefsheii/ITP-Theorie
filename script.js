@@ -76,6 +76,11 @@ async function loadCvFromDatabase() {
     const data = await response.json();
 
     if (!response.ok) {
+      if (data.error?.includes("SUPABASE")) {
+        throw new Error(
+          "Vercel: SUPABASE_URL und SUPABASE_SERVICE_ROLE_KEY in Environment Variables setzen, dann Redeploy."
+        );
+      }
       throw new Error(data.error || "Daten konnten nicht geladen werden.");
     }
 
@@ -92,6 +97,11 @@ async function testDatabaseConnection() {
     const data = await response.json();
 
     if (!response.ok || !data.ok) {
+      if (data.message?.includes("SUPABASE") || data.env === false) {
+        throw new Error(
+          "Keys fehlen in Vercel → Settings → Environment Variables → SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY"
+        );
+      }
       throw new Error(data.message || "Verbindung fehlgeschlagen.");
     }
 
