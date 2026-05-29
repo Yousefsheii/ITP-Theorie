@@ -1,59 +1,47 @@
-# Lebenslauf mit Datenbank (vollstaendig)
+# Lebenslauf mit SQLite (ohne Vercel/Supabase)
 
-## Schnellstart (damit alles funktioniert)
+## Anforderungen erfuellt
 
-### 1) Supabase
-1. [supabase.com](https://supabase.com) → neues Projekt
-2. **SQL Editor** → kompletten Inhalt von `database/seed_full.sql` einfügen → **Run**
-3. Unten solltest du sehen:
-   - persons: **1**
-   - cv_sections: **5**
-   - cv_text_variants: **5**
-   - cv_items: **15**
+- **Datenbankverbindung:** SQLite (`database/cv.db`)
+- **Relational:** `persons` → `cv_sections` → `cv_text_variants` / `cv_items`
+- **Request aus DB:** `GET /api/cv` (SQL SELECT)
+- **Wechselnder Text:** Profil aus `cv_text_variants` (zufaellig pro Request)
 
-### 2) Keys holen
-Supabase → **Project Settings** → **API**:
-- `Project URL` → `SUPABASE_URL`
-- `service_role` Key → `SUPABASE_SERVICE_ROLE_KEY` (geheim halten!)
+## Starten
 
-### 3) Vercel
-Project Settings → Environment Variables → beide Keys setzen → **Redeploy**
+```bash
+npm install
+npm start
+```
 
-### 4) Testen
-- Seite öffnen
-- **DB-Verbindung testen** → soll „Datenbank bereit“ zeigen
+Browser: **http://localhost:3000**
+
+- **DB-Verbindung testen** → SQLite OK
 - **Neu aus Datenbank laden** → Lebenslauf erscheint
-- Mehrmals klicken → Profiltext kann sich ändern
 
----
+## Datenbank
 
-## Lokal testen
-
-1. `.env` anlegen (Vorlage: `.env.example`)
-2. `npm install`
-3. `npm start`
-4. Browser: `http://localhost:3000`
-
----
+- Datei: `database/cv.db` (wird beim ersten Start automatisch erstellt)
+- Schema: `database/sqlite_init.sql`
+- Daten werden beim ersten Start automatisch eingefuegt
 
 ## Relationales Modell
 
 ```
 persons (1) ──► cv_sections (n)
-                    ├── cv_text_variants (n)  ← wechselnder Profiltext
+                    ├── cv_text_variants (n)
                     └── cv_items (n)
 ```
 
-## API
+## Wichtig
 
-| Route | Beschreibung |
-|-------|----------------|
-| `GET /api/cv` | Liest kompletten Lebenslauf aus DB |
-| `GET /api/health` | Prüft ENV + DB-Verbindung |
+- **Nicht** `index.html` direkt im Browser oeffnen (file://)
+- Immer ueber `npm start` → `http://localhost:3000`
+- Vercel/Supabase wird **nicht** mehr benoetigt
 
 ## Dateien
 
-- `database/seed_full.sql` – **komplette DB befüllen**
-- `api/cv.js` – Datenbank-Request
-- `lib/cv-service.js` – Logik
-- `server.js` – lokaler Test-Server
+- `server.js` – Express + API
+- `lib/db.js` – SQLite Verbindung + Seed
+- `lib/cv-service-sqlite.js` – SELECT-Abfragen
+- `database/sqlite_init.sql` – Tabellen

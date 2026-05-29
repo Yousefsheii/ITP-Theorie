@@ -28,7 +28,7 @@ function renderCv(data) {
     .join(" · ");
 
   if (data.stats) {
-    statsEl.textContent = `DB: ${data.stats.sections} Abschnitte · ${data.stats.textVariants} Textvarianten · ${data.stats.items} Eintraege`;
+    statsEl.textContent = `SQLite: ${data.stats.sections} Abschnitte · ${data.stats.textVariants} Textvarianten · ${data.stats.items} Eintraege`;
   }
 
   cvContentEl.innerHTML = data.sections
@@ -49,25 +49,25 @@ function renderCv(data) {
       const dynamicHtml =
         section.key === "about" && section.dynamicText
           ? `<p class="dynamic-text">${escapeHtml(section.dynamicText)}</p>
-             <p class="db-hint">Profiltext per GET /api/cv aus Tabelle cv_text_variants (zufaellige Variante).</p>`
+             <p class="db-hint">Profiltext per SQL SELECT aus cv_text_variants (zufaellige Variante).</p>`
           : "";
 
       return `
         <section class="card">
           <h2>${escapeHtml(section.title)}</h2>
           ${dynamicHtml}
-          ${itemsHtml || "<p class='db-hint'>Keine Eintraege in dieser Sektion.</p>"}
+          ${itemsHtml || "<p class='db-hint'>Keine Eintraege.</p>"}
         </section>
       `;
     })
     .join("");
 
   cvContentEl.hidden = false;
-  setStatus(`Erfolgreich geladen (${new Date(data.loadedAt).toLocaleString("de-AT")}).`);
+  setStatus(`Erfolgreich aus SQLite geladen (${new Date(data.loadedAt).toLocaleString("de-AT")}).`);
 }
 
 async function loadCvFromDatabase() {
-  setStatus("Lese Daten aus der relationalen Datenbank …");
+  setStatus("SQL-Request: SELECT aus SQLite …");
   statsEl.textContent = "";
   cvContentEl.hidden = true;
 
@@ -76,39 +76,37 @@ async function loadCvFromDatabase() {
     const data = await response.json();
 
     if (!response.ok) {
-      if (data.error?.includes("SUPABASE")) {
-        throw new Error(
-          "Vercel: SUPABASE_URL und SUPABASE_SERVICE_ROLE_KEY in Environment Variables setzen, dann Redeploy."
-        );
-      }
       throw new Error(data.error || "Daten konnten nicht geladen werden.");
     }
 
     renderCv(data);
   } catch (error) {
-    setStatus(error.message, true);
+    if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+      setStatus("Server nicht erreichbar. Bitte npm start ausfuehren und localhost:3000 oeffnen.", true);
+    } else {
+      setStatus(error.message, true);
+    }
   }
 }
 
 async function testDatabaseConnection() {
-  setStatus("Teste Datenbank-Verbindung …");
+  setStatus("Teste SQLite-Verbindung …");
   try {
     const response = await fetch("/api/health");
     const data = await response.json();
 
     if (!response.ok || !data.ok) {
-      if (data.message?.includes("SUPABASE") || data.env === false) {
-        throw new Error(
-          "Keys fehlen in Vercel → Settings → Environment Variables → SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY"
-        );
-      }
       throw new Error(data.message || "Verbindung fehlgeschlagen.");
     }
 
     setStatus(data.message);
-    statsEl.textContent = data.persons !== undefined ? `Personen in DB: ${data.persons}` : "";
+    statsEl.textContent = `Personen: ${data.persons} · Abschnitte: ${data.sections} · Eintraege: ${data.items}`;
   } catch (error) {
-    setStatus(error.message, true);
+    if (error.message.includes("Failed to fetch")) {
+      setStatus("Server laeuft nicht. Terminal: npm install && npm start", true);
+    } else {
+      setStatus(error.message, true);
+    }
   }
 }
 

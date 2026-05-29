@@ -1,16 +1,14 @@
 {
   "name": "itp-lebenslauf",
   "version": "1.0.0",
-  "description": "Lebenslauf mit relationaler Datenbank (Supabase/PostgreSQL)",
-  "main": "index.html",
+  "description": "Lebenslauf mit SQLite Datenbank",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "npx vercel dev"
+    "start": "node server.js"
   },
   "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.106.0",
-    "dotenv": "^16.4.7",
+    "better-sqlite3": "^11.8.1",
     "express": "^4.21.2"
   }
 }
