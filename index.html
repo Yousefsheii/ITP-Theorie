@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yousef Sheii – Lebenslauf</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="badge">ITP · Relationale Datenbank · Supabase</p>
+      <h1 id="fullName">Lebenslauf wird geladen …</h1>
+      <p id="jobTitle" class="subtitle"></p>
+      <p id="meta" class="meta"></p>
+      <div class="actions">
+        <button id="reloadBtn" type="button">Neu aus Datenbank laden</button>
+        <button id="healthBtn" type="button" class="secondary">DB-Verbindung testen</button>
+      </div>
+      <p id="status" class="status" aria-live="polite"></p>
+      <p id="stats" class="stats"></p>
+    </header>
+
+    <section id="cvContent" class="cv-grid" hidden></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

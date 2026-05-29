@@ -12,3 +12,7 @@ yarn-error.log*
 
 ### Vercel
 .vercel/
+
+### Env
+.env
+.env.local
